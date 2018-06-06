@@ -1,10 +1,16 @@
-variable "image_id" {}
+variable "image_id" {
+  default = "5088c906-1636-4319-9dcb-76ab92257731" # CentOS 7
+}
 
-variable "flavor_name" {}
+variable "flavor_name" {
+  default = "c2-7.5gb-31"
+}
 
 variable "key_name" {}
 
-variable "network_name" {}
+variable "network_name" {
+  default = "jupyterhub_network"
+}
 
 variable "name" {
   default = ""
@@ -12,10 +18,6 @@ variable "name" {
 
 variable "vol_homedir_size" {
   default = 10
-}
-
-variable "vol_docker_size" {
-  default = 20
 }
 
 locals {
