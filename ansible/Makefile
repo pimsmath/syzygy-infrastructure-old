@@ -8,7 +8,7 @@ ANSIBLE_CMD = TF_STATE=$(TF_PATH)/$(env) ansible --private-key=../keys/id_rsa -i
 export PATH := $(TF_PATH)/bin/$(UNAME):$(PATH)
 
 setup:
-	ln -s ./bin/$(UNAME)/ansible-terraform-inventory inventory
+	if [ ! -f inventory ] ; then ln -s ./bin/$(UNAME)/ansible-terraform-inventory inventory; fi
 
 check-env:
 ifndef env
