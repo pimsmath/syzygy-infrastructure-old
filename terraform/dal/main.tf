@@ -26,12 +26,26 @@ module "syzygy" {
   vol_homedir_size = "${local.vol_homedir_size}"
 }
 
+resource "ansible_group" "hub" {
+  inventory_group_name = "hub"
+}
+
+resource "ansible_group" "hub-dev" {
+  inventory_group_name = "hub-dev"
+}
+
+resource "ansible_group" "jupyter" {
+  inventory_group_name = "jupyter"
+  children             = ["hub", "hub-dev"]
+}
+
 resource "ansible_host" "dal" {
   inventory_hostname = "${local.name}"
-  groups             = ["syzygy"]
+  groups             = ["hub", "hub-dev"]
 
   vars {
-    ansible_user            = "ptty2u"
+    ansible_user = "ptty2u"
+
     ansible_host            = "${local.name}"
     ansible_ssh_common_args = "-C -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
   }
@@ -40,3 +54,4 @@ resource "ansible_host" "dal" {
 output "floating_ip" {
   value = "${openstack_networking_floatingip_v2.fip.address}"
 }
+
