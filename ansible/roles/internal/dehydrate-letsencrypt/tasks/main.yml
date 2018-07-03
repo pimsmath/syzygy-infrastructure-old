@@ -29,13 +29,8 @@
     - { src: "config.j2",  dest: "{{ acme_home }}/config.sh",   mode: "0640" }
     - { src: "domains.j2", dest: "{{ acme_home }}/domains.txt", mode: "0640" }
   notify:
-    - run dehydrate
-
-- name: Retain a copy of the configuration
-  synchronize:
-    src: '{{ acme_home }}'
-    dest: '{{ acme_secrets }}'
-    mode: 'pull'
+    - Remove existing certs
+    - Run dehydrate
 
 - name: Add config for dehydrated-letsencrypt
   template:
@@ -53,3 +48,9 @@
 
 - name: Flush handlers for dehydrate
   meta: flush_handlers
+
+- name: Retain a copy of the configuration
+  synchronize:
+    src: '{{ acme_home }}'
+    dest: '{{ acme_secrets }}'
+    mode: 'pull'
