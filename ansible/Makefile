@@ -2,8 +2,8 @@ UNAME := $(shell uname)
 TOP := $(shell pwd)
 TF_PATH := $(TOP)/../terraform
 
-PLAYBOOK_CMD = TF_STATE=$(TF_PATH)/$(env) ansible-playbook --private-key=../keys/id_rsa -i ./inventory
-ANSIBLE_CMD = TF_STATE=$(TF_PATH)/$(env) ansible --private-key=../keys/id_rsa -i ./inventory
+PLAYBOOK_CMD = TF_STATE=$(TF_PATH)/$(env) ansible-playbook --private-key=../keys/id_rsa --vault-password-file=../keys/ansible-vault -i ./inventory
+ANSIBLE_CMD = TF_STATE=$(TF_PATH)/$(env) ansible --private-key=../keys/id_rsa --vault-password-file=../keys/ansible-vault -i ./inventory
 
 export PATH := $(TF_PATH)/bin/$(UNAME):$(PATH)
 

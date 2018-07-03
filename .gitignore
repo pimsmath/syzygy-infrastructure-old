@@ -10,6 +10,7 @@
 **/openrc.sh
 **/clouds.yaml
 keys/id_rsa*
+keys/ansible-vault
 ansible/roles/external
 ansible/group_vars/*/local_vars.yml
 ansible/inventory
