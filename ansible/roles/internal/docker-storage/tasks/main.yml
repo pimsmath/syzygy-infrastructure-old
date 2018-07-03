@@ -42,12 +42,6 @@
   when: openstack_ephemeral_docker_disk is not defined
   register: dockerconf
 
-- name: Ensure /var/lib/docker does not exist
-  file:
-    path: /var/lib/docker
-    state: absent
-  register: restartdocker
-
 - name: systemctl reload
   systemd: daemon_reload=yes
   when: dockerconf.changed

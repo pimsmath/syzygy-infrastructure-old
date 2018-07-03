@@ -27,13 +27,13 @@
 - name: Create tank zpool
   notify:
    - Start zfs
-  command: /sbin/zpool create -f tank mirror '{{ zfs_disk_1 }}' '{{ zfs_disk_2 }}'
+  command: /sbin/zpool create -f '{{ zfs_pool_name }}' '{{ zfs_vdev_config }}'
   args:
     creates: /tank
-  when: zfs_disk_1 is defined
+  when: zfs_vdev_config is defined
 
 - name: Create ZFS home container
-  command: /sbin/zfs create tank/home
+  command: /sbin/zfs create '{{ zfs_pool_name }}'/home
   args:
-    creates: /tank/home
-  when: zfs_disk_1 is defined
+    creates: '/{{ zfs_pool_name }}/home'
+  when: zfs_vdev_config is defined
