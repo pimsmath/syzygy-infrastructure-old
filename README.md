@@ -14,6 +14,32 @@ following services:
 * Neutron
 * Designate
 
+## Packer
+
+Packer is used to create OpenStack images with pre-installed packages and
+settings. This is to help reduce the amount of time it takes to build dev
+and CI environments.
+
+### Binaries
+
+The `./packer/bin` directory contains the binaries required to run Packer.
+These binaries are bundled in this repository to ensure all project members are
+using the same version.
+
+### Makefile
+
+The `./packer/Makefile` provides an easy way to interact with Packer to create
+images.
+
+For example, to create the base hub image:
+
+```
+  $ make build/hub
+```
+
+> Note: review the `Makefile` and Packer build files to ensure their settings
+> are appropriate for your environment.
+
 ## Terraform
 
 The resources are controlled by terraform so we can destroy and recreate
@@ -244,3 +270,14 @@ password: password
 
 user1 will release an eduPersonTargetedID attribute with the value `lw90qgjwcywcdg0dh3xpykvn0a2wctetlhp5eznmu`
 user2 will release an eduPersonPrincipalName attribute with the value `user2@example.ca`
+
+## Let's Encrypt Integration
+
+Let's Encrypt is used for all SSL certificates. We use
+[dehydrated](https://github.com/lukas2511/dehydrated) combined with OpenStack
+Designate to generate wildcard certificates. The certificates are stored on the
+Clavius server and then pushed to the various Callysto servers.
+
+Dehydrated is stored in the `vendor` directory.
+
+The configuration is stored in `letsencrypt`.

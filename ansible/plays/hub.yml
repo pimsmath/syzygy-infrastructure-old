@@ -34,20 +34,6 @@
       include_role:
         name: base-packages
 
-    # Configuration is stored in
-    # group_vars/<group>/secret.yml
-    - name: Manage secrets
-      tags: ["secrets"]
-      include_role:
-        name: secret
-
-    # Configuration is stored in
-    # group_vars/<group>/deploy_keys.yml
-    - name: Manage deploy keys
-      tags: ["ssh"]
-      include_role:
-        name: deploy-keys
-
     # This will create and manage a zpool based on
     # `zfs_disk_1` and `zfs_disk_2` defined in local_vars.yml.
     - name: Manage ZFS
@@ -87,12 +73,6 @@
       include_role:
         name: apache
 
-    # This requires the hub to have a resolvable FQDN.
-    - name: Configure letsencrypt
-      tags: ["ssl", "letsencrypt", "httpd"]
-      include_role:
-        name: dehydrate-letsencrypt
-
     - name: Manage Python3
       tags: ["python", "python3"]
       include_role:
@@ -124,9 +104,9 @@
         name: 'python-docker-py'
         state: 'present'
 
-    - name: Manage Docker ephemeral storage
+    - name: Manage Docker storage
       include_role:
-        name: docker-ephemeral
+        name: docker-storage
 
     # Manage Jupyterhub
     # This role is tightly coupled to the following roles:
