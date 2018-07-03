@@ -1,0 +1,10 @@
+zfs_disk_1: /dev/vdc
+openstack_ephemeral_docker_disk: /dev/vdb
+
+domain: dal.syzygy.ca
+callysto_html_longname: Dalhousie
+
+# Dalhousie doesn't seem to have shibboleth, these values are fake
+shib_session_init_entityid: https://idp.testshib.org/idp/shibboleth
+shib_idp_metadata_url: https://idp.testshib.org/idp/shibboleth
+dehydrate_test_cert: False

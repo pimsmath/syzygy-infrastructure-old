@@ -1,0 +1,15 @@
+---
+jupyterhub_authenticators:
+  dummy:
+    name: 'syzygyauthenticator.dummy.SyzygyDummyAuthenticator'
+    options:
+      - conf_object: 'SyzygyDummyAuthenticator.user_id'
+        value: '{{ jupyterhub_user_uid }}'
+      - conf_object: 'SyzygyDummyAuthenticator.homedir_string'
+        value: "'/tank/home/USERNAME'"
+      - conf_object: 'SyzygyDummyAuthenticator.create_homedir_cmd'
+        value: "['/opt/syzygyauthenticator/zfs-homedir.sh', 'USERNAME', 'jupyter']"
+      - conf_object: 'SyzygyDummyAuthenticator.create_system_users'
+        value: 'False'
+      - conf_object: 'SyzygyDummyAuthenticator.create_user_homedir'
+        value: 'True'

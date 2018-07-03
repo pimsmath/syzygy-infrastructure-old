@@ -1,0 +1,13 @@
+---
+jupyterhub_authenticators:
+  pam:
+    name: 'syzygyauthenticator.SyzygyPAMAuthenticator'
+    options:
+      - conf_object: 'SyzygyAuthenticator.create_system_users'
+        value: False
+      - conf_object: 'SyzygyAuthenticator.create_user_homedir'
+        value: True
+      - conf_object: 'SyzygyAuthenticator.create_homedir_cmd'
+        value: "['/opt/syzygyauthenticator/zfs-homedir.sh', 'USERNAME', 'USERNAME']"
+      - conf_object: 'SyzygyAuthenticator.homedir_string'
+        value: "'/tank/home/USERNAME'"
