@@ -40,8 +40,8 @@
     owner: root
     group: root
   notify: 
-   - restart apache
-   - run dehydrate
+   - Restart apache
+   - Run dehydrate
 
 - name: Add cron job
   file: src="{{ acme_home }}/wrapper.sh" dest="/etc/cron.daily/dehydrated-letsencrypt" state=link

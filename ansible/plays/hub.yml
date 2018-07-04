@@ -73,6 +73,12 @@
       include_role:
         name: apache
 
+    # This requires the hub to have a resolvable FQDN.
+    - name: Configure letsencrypt
+      tags: ["ssl", "letsencrypt", "httpd"]
+      include_role:
+        name: dehydrate-letsencrypt
+
     - name: Manage Python3
       tags: ["python", "python3"]
       include_role:
