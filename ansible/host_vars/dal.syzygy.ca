@@ -1,4 +1,4 @@
-callysto_html_longname: Dalhousie
+syzygy_html_longname: Dalhousie University
 
 # Dalhousie doesn't seem to have shibboleth, these values are fake
 shib_session_init_entityid: https://idp.testshib.org/idp/shibboleth

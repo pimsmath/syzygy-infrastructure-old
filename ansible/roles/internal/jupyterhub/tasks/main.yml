@@ -7,9 +7,9 @@
 - name: Include authenticator variables
   include_vars: "{{ jupyterhub_authenticator }}.yml"
 
-- name: Manage Callysto html repo
+- name: Manage landing page html repo
   include_role:
-    name: callysto-html
+    name: '{{ jupyterhub_html_family }}'
 
 - name: Manage dockerspawner
   include_role:
