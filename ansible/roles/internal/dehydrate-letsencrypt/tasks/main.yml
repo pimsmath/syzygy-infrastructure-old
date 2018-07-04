@@ -40,7 +40,7 @@
     owner: root
     group: root
   notify: 
-   - Restart apache
+   - restart apache
    - Run dehydrate
 
 - name: Add cron job
