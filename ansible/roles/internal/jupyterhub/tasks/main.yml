@@ -53,6 +53,20 @@
   set_fact:
     jupyterhub_user_uid: '{{ getent_passwd["jupyter"][1] }}'
 
+- name: Install pycurl dependencies
+  yum:
+    name: '{{ item.name }}'
+    state: '{{ item.state }}'
+    update_cache: yes
+  with_items:
+    - { 'name': 'openssl-devel', 'state': 'present' }
+    - { 'name': 'libcurl-devel', 'state': 'present' }
+
+- name: Install pycurl
+  pip:
+    name: pycurl
+    executable: pip3.6
+
 - name: Install Jupyterhub
   pip:
     name: jupyterhub
