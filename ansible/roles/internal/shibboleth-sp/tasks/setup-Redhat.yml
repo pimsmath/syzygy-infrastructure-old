@@ -19,7 +19,7 @@
     group: root
     mode: 0644
   with_items:
-    - { src: 'shibboleth2.xml.j2', dest: '/etc/shibboleth/shibboleth2.xml' }
+    - { src: 'shibboleth2.xml.idp_v{{ shib_idp_version }}.j2', dest: '/etc/shibboleth/shibboleth2.xml' }
     - { src: 'attribute-map.xml.j2', dest: '/etc/shibboleth/attribute-map.xml' }
   notify:
     - restart apache
@@ -91,18 +91,18 @@
 ###
 # Some sites only provide an xml file, some provide a URL as well
 #
-- name: Populate IdP metadata from url
+- name: Populate IdP metadata from uri
   get_url:
-    url: '{{ shib_idp_metadata_url }}'
+    url: '{{ shib_idp_metadata_uri }}'
     dest: '/etc/shibboleth/{{ ansible_hostname }}_idp-metadata.xml'
     owner: root
     group: root
     mode: 0444
-  when: shib_idp_metadata_url is defined
+  when: shib_idp_metadata_uri is defined
   notify: restart shibd
 
 - name: Populate IdP metadata from file
-  when: shib_idp_metadata_url is undefined
+  when: shib_idp_metadata_uri is undefined
   copy:
     content: '{{ shib_idp_metadata_file }}'
     dest: '/etc/shibboleth/{{ ansible_hostname }}_idp-metadata.xml'
