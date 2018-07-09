@@ -58,7 +58,7 @@
     name: pycurl
     executable: pip3.6
   environment:
-    PYCURL_SSL_LIBRARY=nss
+    PYCURL_SSL_LIBRARY: nss
 
 - name: Install Jupyterhub
   pip:

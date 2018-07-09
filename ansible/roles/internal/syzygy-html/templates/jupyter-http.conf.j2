@@ -1,5 +1,12 @@
+{% if jupyterhub_authenticator == 'shib' %}
+# Shib IdPv3 recommentation
+UseCanonicalName On
+
 # Unset REMOTE_USER header (for security)
 RequestHeader unset REMOTE_USER
+RequestHeader unset {{ shib_auth_attribute }}
+RequestHeader unset Shib-Authentication-Instant
+{% endif %}
 
 <VirtualHost *:80>
   ServerName {{ inventory_hostname }}
@@ -27,13 +34,13 @@ RequestHeader unset REMOTE_USER
 
   Header always set Strict-Transport-Security "max-age=15768000"
 
-  {% if jupyterhub_authenticator == 'shib' %}
+{% if jupyterhub_authenticator == 'shib' %}
   ProxyPass /Shibboleth.sso !
 
   <Location /Shibboleth.sso>
     SetHandler shib
   </Location>
-  {% endif %}
+{% endif %}
 
   <Directory "/var/www/html/site">
     Order allow,deny
@@ -46,24 +53,28 @@ RequestHeader unset REMOTE_USER
     ProxyPreserveHost on
   </Location>
 
-  {% if jupyterhub_authenticator == 'shib' %}
+{% if jupyterhub_authenticator == 'shib' %}
   <Location /jupyter/hub>
     AuthType shibboleth
     Require shibboleth
     ShibRequestSetting requireSession true
     ShibUseHeaders off
     RequestHeader set REMOTE_USER %{REMOTE_USER}s
+    RequestHeader set {{ shib_auth_attribute }} "%{{ '{' }}{{ shib_auth_attribute }}{{ '}' }}e"
+    RequestHeader set Shib-Authentication-Instant "%{Shib-Authentication-Instant}e"
   </Location>
-  {% endif %}
+{% endif %}
 
   <LocationMatch "/jupyter/(user/[^/]*)/(api/kernels/[^/]+/channels|terminals/websocket)(.*)">
-    {% if jupyterhub_authenticator == 'shib' %}
+{% if jupyterhub_authenticator == 'shib' %}
     AuthType shibboleth
     Require shibboleth
     ShibRequestSetting requireSession true
     ShibUseHeaders off
     RequestHeader set REMOTE_USER %{REMOTE_USER}s
-    {% endif %}
+    RequestHeader set {{ shib_auth_attribute }} "%{{ '{' }}{{ shib_auth_attribute }}{{ '}' }}e"
+    RequestHeader set Shib-Authentication-Instant "%{Shib-Authentication-Instant}e"
+{% endif %}
 
     ProxyPassMatch ws://127.0.0.1:8000/jupyter/$1/$2$3
     ProxyPassReverse ws://127.0.0.1:8000/jupyter/$1/$2$3
