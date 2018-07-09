@@ -1,1 +1,22 @@
+zfs_vdev_config: /dev/vdc
+domain: '{{ inventory_hostname }}'
+
+openstack_ephemeral_docker_disk: /dev/vdb
+
+# Set to False to get a production-ready certificate
+dehydrate_test_cert: True
+
+# 
+firewalld_allow_services: 
+    - { service: 'http' }
+    - { service: 'https' }
+
 jupyterhub_html_family: 'syzygy-html'
+syzygyauthenticator_version: shib-ubc
+jupyterhub_spawner: dockerspawner
+jupyterhub_authenticator: shib
+
+# The docker image to use for notebooks
+jupyterhub_docker_image: 'pimsubc/nonroot'
+jupyterhub_docker_container: 'pimsubc/nonroot:0.1'
+
