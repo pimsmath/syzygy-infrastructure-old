@@ -1,6 +1,12 @@
 # {{ ansible_managed }}
 {% block global %}
 import os
+from subprocess import check_call
+
+def create_fs_hook(spawner):
+    username = spawner.user.name
+    callysto_user = 'jupyter'
+    check_call(['/opt/syzygy/authenticator/zfs-homedir.sh', username, callysto_user])
 
 {% for global_option in jupyterhub_global_options %}
 c.{{ global_option.conf_object }} = {{ global_option.value }}

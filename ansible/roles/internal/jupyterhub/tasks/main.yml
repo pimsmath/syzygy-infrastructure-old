@@ -1,12 +1,4 @@
 ---
-# Include variables for spawner
-- name: Include spawner variables
-  include_vars: "{{ jupyterhub_spawner }}.yml"
-
-# Include variables for authenticator
-- name: Include authenticator variables
-  include_vars: "{{ jupyterhub_authenticator }}.yml"
-
 - name: Manage landing page html repo
   include_role:
     name: '{{ jupyterhub_html_family }}'
@@ -59,13 +51,14 @@
     state: '{{ item.state }}'
     update_cache: yes
   with_items:
-    - { 'name': 'openssl-devel', 'state': 'present' }
     - { 'name': 'libcurl-devel', 'state': 'present' }
 
 - name: Install pycurl
   pip:
     name: pycurl
     executable: pip3.6
+  environment:
+    PYCURL_SSL_LIBRARY=nss
 
 - name: Install Jupyterhub
   pip:
