@@ -26,6 +26,10 @@
     dest: '/prometheus/config/rules/{{item.name}}'
   with_items: '{{ prom_rule_files }}'
 
+- name: Add network for prometheus container
+  docker_network:
+    name: '{{ prom_network }}'
+
 - name: Start prom/prometheus container
   docker_container:
     image: '{{ prom_image }}'
@@ -33,13 +37,8 @@
     ports: '{{ prom_listen_address }}:{{prom_internal_port }}:{{ prom_external_port }}'
     state: started
     recreate: yes
-    #    command:
-    #  - "--config.file=/etc/prometheus/prometheus.yml"
-    #  - "--storage.tsdb.path=/prometheus"
-    #  - "--web.console.libraries=/usr/share/prometheus/console_libraries"
-    #  - "--web.console.templates=/usr/share/prometheus/consoles"
-    #  - "--web.external-url={{ prom_external_url }}"
-    #  - "--web.route-prefix={{ prom_route_prefix }}"
+    networks:
+      - name: '{{ prom_network }}'
     volumes: 
       - /prometheus/data:/prometheus:rw
       - /prometheus/config/prometheus.yml:/etc/prometheus/prometheus.yml:ro

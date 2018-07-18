@@ -9,6 +9,10 @@
   with_items:
     - { 'path': '/grafana', 'mode': '0755' }
 
+- name: Add a network for grafana container
+  docker_network:
+    name: '{{ grafana_network }}'
+
 - name: Start grafana/grafana container
   docker_container:
     image: '{{ grafana_image }}:{{ grafana_image_tag }}'
@@ -16,6 +20,8 @@
     user: '{{ grafana_user_uid }}'
     ports: '{{ grafana_listen_address }}:{{ grafana_internal_port }}:{{ grafana_external_port }}'
     state: started
+    networks:
+      - name: '{{ grafana_network }}'
     env: { 
       'GF_SERVER_ROOT_URL': '{{ grafana_root_url }}',
       'GF_SERVER_DOMAIN': '{{ grafana_domain }}'

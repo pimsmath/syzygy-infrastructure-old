@@ -8,6 +8,8 @@ prom_listen_address: '127.0.0.1'
 prom_data_user_uid: 65534
 prom_data_user_gid: 65534
 
+prom_stats_network: "PrometheusNetwork"
+
 # This docker volume will be created (or should already exist) to store data
 # for prometheus
 prom_volume: '/prometheus'
