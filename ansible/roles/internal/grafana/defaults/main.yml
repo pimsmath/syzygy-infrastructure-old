@@ -1,0 +1,11 @@
+---
+grafana_image: 'grafana/grafana'
+grafana_image_tag: 5.2.1
+grafana_name: 'grafana'
+grafana_internal_port: 3000 
+grafana_external_port: 3000
+grafana_listen_address: '127.0.0.1'
+grafana_user_uid: 65534
+grafana_user_gid: 65534
+grafana_root_url: '/'
+grafana_domain: '{{ inventory_hostname }}'

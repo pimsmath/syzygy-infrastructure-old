@@ -1,0 +1,46 @@
+---
+- name: Add storage and configuration locations
+  file:
+    path: '{{ item.path }}'
+    state: 'directory'
+    owner: '{{ prom_data_user_uid }}'
+    group: '{{ prom_data_user_gid }}'
+    mode: '{{ item.mode }}'
+  with_items:
+    - { 'path': '/prometheus', 'mode': '0755' }
+    - { 'path': '/prometheus/data', 'mode': '0755' }
+    - { 'path': '/prometheus/config', 'mode': '0700' }
+    - { 'path': '/prometheus/config/rules', 'mode': '0700' }
+
+- name: Add prometheus configuration file
+  template:
+    src: prometheus.yml.j2
+    dest: /prometheus/config/prometheus.yml
+    owner: '{{ prom_data_user_uid }}'
+    group: '{{ prom_data_user_gid }}'
+    mode: 0644
+
+- name: Add prometheus rule files
+  copy:
+    content: '{{ item.content }}'
+    dest: '/prometheus/config/rules/{{item.name}}'
+  with_items: '{{ prom_rule_files }}'
+
+- name: Start prom/prometheus container
+  docker_container:
+    image: '{{ prom_image }}'
+    name: '{{ prom_name }}'
+    ports: '{{ prom_listen_address }}:{{prom_internal_port }}:{{ prom_external_port }}'
+    state: started
+    recreate: yes
+    #    command:
+    #  - "--config.file=/etc/prometheus/prometheus.yml"
+    #  - "--storage.tsdb.path=/prometheus"
+    #  - "--web.console.libraries=/usr/share/prometheus/console_libraries"
+    #  - "--web.console.templates=/usr/share/prometheus/consoles"
+    #  - "--web.external-url={{ prom_external_url }}"
+    #  - "--web.route-prefix={{ prom_route_prefix }}"
+    volumes: 
+      - /prometheus/data:/prometheus:rw
+      - /prometheus/config/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - /prometheus/config/rules:/etc/prometheus/rules

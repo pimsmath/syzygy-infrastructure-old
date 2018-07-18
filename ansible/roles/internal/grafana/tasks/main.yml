@@ -1,0 +1,24 @@
+---
+- name: Add grafana storage and configuration locations
+  file:
+    path: '{{ item.path }}'
+    state: 'directory'
+    owner: '{{ grafana_user_uid }}'
+    group: '{{ grafana_user_gid }}'
+    mode: '{{ item.mode }}'
+  with_items:
+    - { 'path': '/grafana', 'mode': '0755' }
+
+- name: Start grafana/grafana container
+  docker_container:
+    image: '{{ grafana_image }}:{{ grafana_image_tag }}'
+    name: '{{ grafana_name }}'
+    user: '{{ grafana_user_uid }}'
+    ports: '{{ grafana_listen_address }}:{{ grafana_internal_port }}:{{ grafana_external_port }}'
+    state: started
+    env: { 
+      'GF_SERVER_ROOT_URL': '{{ grafana_root_url }}',
+      'GF_SERVER_DOMAIN': '{{ grafana_domain }}'
+    }
+    volumes: 
+      - /grafana:/var/lib/grafana:rw

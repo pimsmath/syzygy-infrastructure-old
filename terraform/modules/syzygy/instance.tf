@@ -1,8 +1,8 @@
-resource "openstack_compute_instance_v2" "hub" {
+resource "openstack_compute_instance_v2" "instance" {
   name = "${var.name}"
   flavor_name     = "${var.flavor_name}"
   key_pair        = "${var.key_name}"
-  security_groups = ["${openstack_networking_secgroup_v2.syzygy_tf.name}"]
+  security_groups = ["${openstack_networking_secgroup_v2.syzygy_tf.id}"]
   user_data       = "${local.cloudconfig}"
  
   block_device {
@@ -20,5 +20,5 @@ resource "openstack_compute_instance_v2" "hub" {
 }
 
 output "instance_uuid" {
-  value = "${openstack_compute_instance_v2.hub.id}"
+  value = "${openstack_compute_instance_v2.instance.id}"
 }

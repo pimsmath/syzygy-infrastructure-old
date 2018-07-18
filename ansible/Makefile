@@ -56,3 +56,15 @@ clavius/check: check-env
 
 clavius/apply: check-env
 	$(PLAYBOOK_CMD) --limit clavius plays/clavius.yml
+
+stats/init/check: check-env
+	$(PLAYBOOK_CMD) --limit stats --check --diff plays/init.yml
+
+stats/init/apply: check-env
+	$(PLAYBOOK_CMD) --limit stats plays/init.yml
+
+stats/check: check-env
+	$(PLAYBOOK_CMD) --limit stats --check --diff plays/stats.yml
+
+stats/apply: check-env
+	$(PLAYBOOK_CMD) --limit stats plays/stats.yml

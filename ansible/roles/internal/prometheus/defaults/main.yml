@@ -1,0 +1,17 @@
+---
+prom_image: 'prom/prometheus'
+prom_name: 'prom'
+prom_external_url: 'https://{{ inventory_hostname }}'
+prom_internal_port: 9090
+prom_external_port: 9090
+prom_listen_address: '127.0.0.1'
+prom_data_user_uid: 65534
+prom_data_user_gid: 65534
+
+# This docker volume will be created (or should already exist) to store data
+# for prometheus
+prom_volume: '/prometheus'
+
+# A list of rule files to add to the scrape_config
+#prom_rule_files: 
+#  - { 'name': 'rule_file_1.yml', content: 'add yaml rules here']
