@@ -4,37 +4,16 @@ firewalld_allow_services:
     - { service: 'http' }
     - { service: 'https' }
 
-prom_external_url: "https://{{ inventory_hostname }}/prometheus"
-prom_route_prefix: "/"
-prom_rule_1: | 
-groups:
-  - name: example
-    rules:
-    - record: job_service:rpc_durations_seconds_count:avg_rate5m
-      expr: avg(rate(rpc_durations_seconds_count[5m])) by (job, service)
-
-prom_rule_files:
-  - { name: 'prometheus.rules.yml',  content: '{{prom_rule_1 }}' }
-
-# Indents and whitespace are a mess here, think of a better way!
-prom_scrape_jobs: |
-  job_name: 'pims.syzygy.ca'
-      metrics_path: /jupyter/hub/metrics
-      static_configs:
-        - targets: ['192.168.82.117']
-          labels:
-            group: 'syzygy'
-
-    - job_name: 'node-stats.syzygy.ca'
-      metrics_path: /metrics
-      static_configs:
-        - targets: ['192.168.82.141:9100']
-
 grafana_domain: '{{ inventory_hostname }}'
 grafana_root_url: 'https://stats.syzygy.ca/grafana/'
 
-prom_network: "SyzygyNetwork"
 grafana_network: "SyzygyNetwork"
+
+
+prometheus_version: 2.3.2
+prometheus_web_listen_address: ":9090"
+prometheus_alertmanager_url: 'localhost:9093'
+
 
 prometheus_exporters_common_root_dir: /prometheus/exporters
 prometheus_exporters_common_dist_dir: "{{ prometheus_exporters_common_root_dir }}/dist"
@@ -42,7 +21,7 @@ prometheus_exporters_common_log_dir: "{{ prometheus_exporters_common_root_dir }}
 prometheus_exporters_common_conf_dir: "{{ prometheus_exporters_common_root_dir }}/etc/prometheus/exporters"
 
 
-prometheus_node_exporter_version: 0.15.1
+prometheus_node_exporter_version: 0.16.0
 prometheus_node_exporter_enabled_collectors:
   - conntrack
   - cpu
@@ -60,5 +39,5 @@ prometheus_node_exporter_enabled_collectors:
   - time
   - vmstat
 prometheus_node_exporter_config_flags:
-   'web.listen-address': '0.0.0.0:9100'
+   'web.listen-address': '127.0.0.1:9100'
    'log.level': 'info'

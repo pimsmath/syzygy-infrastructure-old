@@ -20,8 +20,7 @@
     user: '{{ grafana_user_uid }}'
     ports: '{{ grafana_listen_address }}:{{ grafana_internal_port }}:{{ grafana_external_port }}'
     state: started
-    networks:
-      - name: '{{ grafana_network }}'
+    network_mode: 'host'
     env: { 
       'GF_SERVER_ROOT_URL': '{{ grafana_root_url }}',
       'GF_SERVER_DOMAIN': '{{ grafana_domain }}'

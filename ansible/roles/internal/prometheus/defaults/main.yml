@@ -1,19 +1,46 @@
 ---
-prom_image: 'prom/prometheus'
-prom_name: 'prom'
-prom_external_url: 'https://{{ inventory_hostname }}'
-prom_internal_port: 9090
-prom_external_port: 9090
-prom_listen_address: '127.0.0.1'
-prom_data_user_uid: 65534
-prom_data_user_gid: 65534
 
-prom_stats_network: "PrometheusNetwork"
+prometheus_version: 2.1.0
+prometheus_gomaxprocs: "{{ ansible_processor_vcpus|default(ansible_processor_count) }}"
+prometheus_service_reload: true
 
-# This docker volume will be created (or should already exist) to store data
-# for prometheus
-prom_volume: '/prometheus'
+prometheus_user: prometheus
+prometheus_group: prometheus
 
-# A list of rule files to add to the scrape_config
-#prom_rule_files: 
-#  - { 'name': 'rule_file_1.yml', content: 'add yaml rules here']
+prometheus_global_scrape_interval: 15s
+prometheus_global_evaluation_interval: 15s
+prometheus_global_scrape_timeout: 10s
+prometheus_self_scrape_interval: "{{ prometheus_global_scrape_interval }}"
+prometheus_self_evaluation_interval: "{{ prometheus_global_scrape_interval }}"
+
+prometheus_release_name: "prometheus-{{ prometheus_version }}.linux-amd64"
+
+prometheus_root_dir: /opt/prometheus
+prometheus_dist_dir: "{{ prometheus_root_dir }}/dist"
+prometheus_bin_dir: "{{ prometheus_root_dir }}/current"
+prometheus_rules_dir: "{{ prometheus_config_dir }}/rules"
+prometheus_file_sd_config_dir: "{{ prometheus_config_dir }}/tgroups"
+
+prometheus_rules_src_dir: "{{ role_path }}/files/rules"
+prometheus_config_parts_src_dir: "{{ role_path }}/files/config_parts"
+prometheus_tgroups_src_dir: "{{ role_path }}/files/tgroups"
+
+prometheus_config_dir: /etc/prometheus
+prometheus_log_dir: /var/log/prometheus
+prometheus_pid_path: /var/run/prometheus.pid
+prometheus_db_dir: /var/lib/prometheus
+
+prometheus_rules_files: []
+
+prometheus_web_listen_address: ":9090"
+prometheus_web_external_url: 'http://localhost:9090/'
+
+prometheus_config_flags:
+  '--config.file': '{{ prometheus_config_dir }}/prometheus.yml'
+  '--storage.tsdb.path': '{{ prometheus_db_dir }}'
+  '--web.listen-address': '{{ prometheus_web_listen_address }}'
+  '--web.external-url': '{{ prometheus_web_external_url }}'
+
+prometheus_config_flags_extra: {}
+prometheus_pam_domain: "prometheus"
+prometheus_pam_nofile_value: "1024"

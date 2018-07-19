@@ -9,4 +9,3 @@ grafana_user_uid: 65534
 grafana_user_gid: 65534
 grafana_root_url: '/'
 grafana_domain: '{{ inventory_hostname }}'
-grafana_network: "GrafanaNetwork"
