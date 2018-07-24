@@ -1,0 +1,15 @@
+---
+- name: Start prometheus-cadvisor container
+  docker_container:
+    image: '{{ prom_cadvisor_image }}:{{ prom_cadvisor_tag }}'
+    name: '{{ prom_cadvisor_name }}'
+    ports: '{{ prom_cadvisor_internal_port }}:{{ prom_cadvisor_external_port }}'
+    state: started
+    privileged: yes
+    volumes: 
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+      - /cgroup:/cgroup:ro

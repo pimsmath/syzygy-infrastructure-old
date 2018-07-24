@@ -111,6 +111,10 @@
       include_role:
         name: prometheus-node-exporter
 
+    - name: cAdvisor container
+      include_role:
+        name: prometheus-cadvisor
+
     - name: Manage prometheus
       include_role:
         name: prometheus
@@ -118,3 +122,4 @@
     - name: Manage grafana
       include_role:
         name: grafana
+
