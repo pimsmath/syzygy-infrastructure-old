@@ -1,10 +1,11 @@
-resource "openstack_compute_instance_v2" "instance" {
+resource "openstack_compute_instance_v2" "hub" {
   name = "${var.name}"
   flavor_name     = "${var.flavor_name}"
   key_pair        = "${var.key_name}"
-  security_groups = ["${openstack_networking_secgroup_v2.syzygy_tf.id}"]
+  security_groups = ["${openstack_networking_secgroup_v2.hub.id}"]
   user_data       = "${local.cloudconfig}"
- 
+
+  # Keep the root disk on a volume
   block_device {
     uuid                  = "${var.image_id}"
     source_type           = "image"
