@@ -1,4 +1,5 @@
 locals {
+  shortname        = "example"
   name             = "example.syzygy.ca"
   public_key       = "${file("~/.ssh/id_cc_openstack.pub")}"
   vol_homedir_size = 100 
@@ -6,7 +7,7 @@ locals {
 }
 
 resource "openstack_compute_keypair_v2" "id_cc_openstack_tf" {
-  name       = "id_cc_openstack-tf"
+  name       = "id_cc_openstack_${local.shortname}"
   public_key = "${local.public_key}"
 }
 
@@ -15,12 +16,12 @@ resource "openstack_networking_floatingip_v2" "fip" {
 }
 
 resource "openstack_compute_floatingip_associate_v2" "fip" {
-  instance_id = "${module.syzygy.instance_uuid}"
+  instance_id = "${module.hub.instance_uuid}"
   floating_ip = "${openstack_networking_floatingip_v2.fip.address}"
 }
 
-module "syzygy" {
-  source           = "../modules/syzygy"
+module "hub" {
+  source           = "../modules/hub"
   name             = "${local.name}"
   key_name         = "${openstack_compute_keypair_v2.id_cc_openstack_tf.name}"
   vol_homedir_size = "${local.vol_homedir_size}"
@@ -39,7 +40,7 @@ resource "ansible_group" "jupyter" {
   children             = ["hub", "hub-dev"]
 }
 
-resource "ansible_host" "dal" {
+resource "ansible_host" "hub" {
   inventory_hostname = "${local.name}"
   groups             = ["hub", "hub-dev"]
 

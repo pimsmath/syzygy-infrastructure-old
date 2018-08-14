@@ -16,6 +16,12 @@ variable "name" {
   default = ""
 }
 
+variable "existing_volumes" {
+  type = "list"
+
+  default = []
+}
+
 variable "vol_homedir_size" {
   default = 10
 }

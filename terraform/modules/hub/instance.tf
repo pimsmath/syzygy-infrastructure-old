@@ -21,5 +21,5 @@ resource "openstack_compute_instance_v2" "hub" {
 }
 
 output "instance_uuid" {
-  value = "${openstack_compute_instance_v2.instance.id}"
+  value = "${openstack_compute_instance_v2.hub.id}"
 }
