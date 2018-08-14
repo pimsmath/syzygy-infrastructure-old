@@ -1,5 +1,5 @@
 locals {
-  name             = "dal.syzygy.ca"
+  name             = "example.syzygy.ca"
   public_key       = "${file("~/.ssh/id_cc_openstack.pub")}"
   vol_homedir_size = 100 
   floatingip_pool  = "VLAN3337"

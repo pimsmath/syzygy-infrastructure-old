@@ -1,18 +1,20 @@
-# Callysto Infrastructure
+# Syzygy Infrastructure
 
-This repository contains code for managing infrastructure within the Callysto
-project.
+This repository contains code for managing infrastructure within the Syzygy
+project. It shares a close relationship with the code for the Callysto
+infrastructure and may one day be replaced by it. In part, the callysto
+infrastructure grew out of the syzygy infrastructure, but in it's turn, it has
+greatly expanded and improved the code base, in large part due to Joe Topjian
+<joe.topjian@cybera.ca> and Andrew Klaus <andrew.klaus@cybera.ca>.
 
 ## OpenStack
 
-The Callysto infrastructure runs exclusively on OpenStack. In order to exactly
-reproduce everything here, you will need access to an OpenStack cloud with the
-following services:
-
-* Nova
-* Cinder
-* Neutron
-* Designate
+The Syzygy infrastructure is intended to be portable and to run almost anywhere
+a suitable virtual machine can be defined. That said, development takes place
+almost exclusively on OpenStack and so there may be some cases where OpenStack
+is assumed as the provider. In particular the terraform setup assumes OpenStack
+as a provider and would need to be translated for use with other providers. The
+ansible playbooks and roles should be more general.
 
 ## Packer
 
@@ -58,9 +60,8 @@ using the same version.
 Terraform modules are stored in `./terraform/modules`. The following modules
 are defined:
 
-  * `clavius`: deploys a centralized team workstation to manage Callysto.
-  * `dns`: Contains hard-coded DNS information for Callysto.
   * `hub`: deploys a standard Callysto JupyterHub environment.
+  * `syzygy`: A derived module to handle syzygy customizations.
 
 ### Makefile
 
