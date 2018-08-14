@@ -48,18 +48,6 @@ hub/check: check-env
 hub/apply: check-env
 	$(PLAYBOOK_CMD) --limit hub plays/hub.yml
 
-clavius/init/check: check-env
-	$(PLAYBOOK_CMD) --limit clavius --check --diff plays/init.yml
-
-clavius/init/apply: check-env
-	$(PLAYBOOK_CMD) --limit clavius plays/init.yml
-
-clavius/check: check-env
-	$(PLAYBOOK_CMD) --limit clavius --check --diff plays/clavius.yml
-
-clavius/apply: check-env
-	$(PLAYBOOK_CMD) --limit clavius plays/clavius.yml
-
 stats/init/check: check-env
 	$(PLAYBOOK_CMD) --limit stats --check --diff plays/init.yml
 
@@ -72,7 +60,7 @@ stats/check: check-env
 stats/apply: check-env
 	$(PLAYBOOK_CMD) --limit stats plays/stats.yml
 
-syzygy/check: check-env
-	$(PLAYBOOK_CMD_AD_HOC) --limit syzygy --check --diff plays/syzygy.yml
-syzygy/apply: check-env
-	$(PLAYBOOK_CMD_AD_HOC) --limit syzygy plays/syzygy.yml
+syzygy-stats/check: check-env
+	$(PLAYBOOK_CMD_AD_HOC) --limit syzygy --check --diff plays/syzygy-stats.yml
+syzygy-stats/apply: check-env
+	$(PLAYBOOK_CMD_AD_HOC) --limit syzygy plays/syzygy-stats.yml

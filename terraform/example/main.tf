@@ -1,12 +1,12 @@
 locals {
   shortname        = "example"
   name             = "example.syzygy.ca"
-  public_key       = "${file("~/.ssh/id_cc_openstack.pub")}"
+  public_key       = "${file("../../keys/id_rsa.pub")}"
   vol_homedir_size = 100 
   floatingip_pool  = "VLAN3337"
 }
 
-resource "openstack_compute_keypair_v2" "id_cc_openstack_tf" {
+resource "openstack_compute_keypair_v2" "id_rsa" {
   name       = "id_cc_openstack_${local.shortname}"
   public_key = "${local.public_key}"
 }
@@ -23,7 +23,7 @@ resource "openstack_compute_floatingip_associate_v2" "fip" {
 module "hub" {
   source           = "../modules/hub"
   name             = "${local.name}"
-  key_name         = "${openstack_compute_keypair_v2.id_cc_openstack_tf.name}"
+  key_name         = "${openstack_compute_keypair_v2.id_rsa.name}"
   vol_homedir_size = "${local.vol_homedir_size}"
 }
 

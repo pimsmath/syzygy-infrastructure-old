@@ -1,4 +1,4 @@
-syzygy_html_longname: UBC Vancouver School of Economics
+syzygy_html_longname: UBC Example Instance
 
 shib_idp_version: 3
 shib_id_attribute: 'eduPersonPrincipalName'
