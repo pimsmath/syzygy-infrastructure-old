@@ -1,0 +1,13 @@
+---
+
+- name: Install and configure prometheus endpoints
+  hosts: syzygy
+  become: true
+  tasks:
+    - name: Prometheus node-exporter
+      include_role:
+        name: prometheus-node-exporter
+
+    - name: cAdvisor container
+      include_role:
+        name: prometheus-cadvisor

@@ -1,0 +1,6 @@
+- labels:
+    type: 'node'
+    group: 'syzygy'
+    host: 'yorku.syzygy.ca'
+    '__metrics_path__': '/metrics/node/metrics'
+  targets: ['yorku.syzygy.ca']

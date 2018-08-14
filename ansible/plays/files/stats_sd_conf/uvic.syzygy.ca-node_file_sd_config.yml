@@ -1,0 +1,6 @@
+- labels:
+    type: 'node'
+    group: 'syzygy'
+    host: 'uvic.syzygy.ca'
+    '__metrics_path__': '/metrics/node/metrics'
+  targets: ['uvic.syzygy.ca']

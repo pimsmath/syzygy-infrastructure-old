@@ -5,6 +5,9 @@ TF_PATH := $(TOP)/../terraform
 PLAYBOOK_CMD = TF_STATE=$(TF_PATH)/$(env) ansible-playbook --private-key=../keys/id_rsa --vault-password-file=../keys/ansible-vault -i ./inventory
 ANSIBLE_CMD = TF_STATE=$(TF_PATH)/$(env) ansible --private-key=../keys/id_rsa --vault-password-file=../keys/ansible-vault -i ./inventory
 
+PLAYBOOK_CMD_AD_HOC = ansible-playbook --vault-password-file=../keys/ansible-vault -i ./inventory-ad-hoc
+ANSIBLE_CMD_AD_HOC = ansible --vault-password-file=../keys/ansible-vault -i ./inventory-ad-hoc
+
 export PATH := $(TF_PATH)/bin/$(UNAME):$(PATH)
 
 setup:
@@ -68,3 +71,8 @@ stats/check: check-env
 
 stats/apply: check-env
 	$(PLAYBOOK_CMD) --limit stats plays/stats.yml
+
+syzygy/check: check-env
+	$(PLAYBOOK_CMD_AD_HOC) --limit syzygy --check --diff plays/syzygy.yml
+syzygy/apply: check-env
+	$(PLAYBOOK_CMD_AD_HOC) --limit syzygy plays/syzygy.yml

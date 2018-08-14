@@ -1,0 +1,6 @@
+- labels:
+    type: 'cadvisor'
+    group: 'syzygy'
+    host: 'bcdata.syzygy.ca'
+    '__metrics_path__': '/metrics/cadvisor/metrics'
+  targets: ['bcdata.syzygy.ca']

@@ -1,3 +1,5 @@
+# This needs to be either dynamic (somehow) or assembled from fragments
+# defined by each new host
 scrape_configs:
   - job_name: 'prometheus'
     static_configs:
@@ -11,26 +13,7 @@ scrape_configs:
     static_configs:
       - targets: ['localhost:8081']
 
-  - job_name: 'node-pims.syzygy.ca'
-    metrics_path: /metrics/node/metrics
-    static_configs:
-      - targets: ['192.168.82.117']
-        labels:
-          type: 'node'
-          group: 'syzygy'
-
-  - job_name: 'pims.syzygy.ca'
-    metrics_path: /metrics/jupyter/metrics
-    static_configs:
-      - targets: ['192.168.82.117']
-        labels:
-          type: 'node'
-          group: 'syzygy'
-
-  - job_name: 'pims.syzygy.ca_docker'
-    metrics_path: /metrics/cadvisor/metrics
-    static_configs:
-      - targets: ['192.168.82.117']
-        labels:
-          type: 'docker'
-          group: 'syzygy'
+  - job_name: 'syzygy.ca'
+    file_sd_configs:
+      - files:
+        - tgroups/*.yml

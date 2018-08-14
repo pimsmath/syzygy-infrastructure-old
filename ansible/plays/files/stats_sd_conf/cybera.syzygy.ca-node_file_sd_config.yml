@@ -1,0 +1,6 @@
+- labels:
+    type: 'node'
+    group: 'syzygy'
+    host: 'cybera.syzygy.ca'
+    '__metrics_path__': '/metrics/node/metrics'
+  targets: ['cybera.syzygy.ca']

@@ -1,20 +1,3 @@
-dehydrate_test_cert: False
-
-firewalld_allow_services: 
-    - { service: 'http' }
-    - { service: 'https' }
-
-grafana_domain: '{{ inventory_hostname }}'
-grafana_root_url: 'https://stats.syzygy.ca/grafana/'
-
-grafana_network: "SyzygyNetwork"
-
-
-prometheus_version: 2.3.2
-prometheus_web_listen_address: ":9090"
-prometheus_alertmanager_url: 'localhost:9093'
-
-
 prometheus_exporters_common_root_dir: /prometheus/exporters
 prometheus_exporters_common_dist_dir: "{{ prometheus_exporters_common_root_dir }}/dist"
 prometheus_exporters_common_log_dir: "{{ prometheus_exporters_common_root_dir }}/var/log/prometheus"
@@ -41,8 +24,3 @@ prometheus_node_exporter_enabled_collectors:
 prometheus_node_exporter_config_flags:
    'web.listen-address': '127.0.0.1:9100'
    'log.level': 'info'
-
-prometheus_tgroups_src_dir: '{{ playbook_dir }}/files/stats_sd_conf'
-prometheus_web_external_url: 'https://{{ inventory_hostname }}/prometheus/'
-prometheus_config_flags_extra:
-  '--web.route-prefix': '/prometheus/'
