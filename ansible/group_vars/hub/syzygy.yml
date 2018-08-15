@@ -1,2 +1,6 @@
 domain: '{{ inventory_hostname }}'
+
 jupyterhub_html_family: 'syzygy-html'
+
+html_longname: "Syzygy"
+syzygy_html_longname: "{{ html_longname }}"

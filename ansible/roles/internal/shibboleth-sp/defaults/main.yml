@@ -1,5 +1,5 @@
 ---
-shib_idp_version: 2
+shib_idp_version: 3
 shib_service: "jupyter"
 shib_org: "PIMS Syzygy Jupyter"
 shib_org_url: "syzygy.com"
