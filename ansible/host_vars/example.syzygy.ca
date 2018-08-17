@@ -9,7 +9,7 @@ jupyterhub_docker_container: callysto/pims-minimal
 
 openstack_ephemeral_docker_disk: /dev/vdb
 
-zfs_vdev_config: /dev/disk/by-id/virtio-8eb4ba6d-7fff-4698-9
+zfs_vdev_config: /dev/disk/by-id/virtio-886f7195-30b7-4233-9
 
 # jupyterhub_config.py
 jupyterhub_spawners:
