@@ -1,36 +1,12 @@
-admin_email: 'jupyter@pims.math.ca'
-domain: '{{ inventory_hostname }}'
 html_longname: UBC Example Instance
-dehydrate_test_cert: False
 
-jupyterhub_spawner: dockerspawner
-jupyterhub_authenticator: shib
-jupyterhub_docker_container: callysto/pims-minimal
 
+# Can we drag these values out of terraform?
 openstack_ephemeral_docker_disk: /dev/vdb
-
 zfs_vdev_config: /dev/disk/by-id/virtio-886f7195-30b7-4233-9
 
 # jupyterhub_config.py
-jupyterhub_spawners:
-  dockerspawner:
-    name: 'dockerspawner.DockerSpawner'
-    options:
-      - conf_object: 'DockerSpawner.use_internal_ip'
-        value: True
-      - conf_object: 'DockerSpawner.image'
-        value: "'{{ jupyterhub_docker_container }}'"
-      - conf_object: 'DockerSpawner.extra_host_config'
-        value: "{'mem_limit': '2g', 'memswap_limit': '2g', 'cpu_period': 100000, 'cpu_quota': 100000 }"
-      - conf_object: 'DockerSpawner.remove_containers'
-        value: 'True'
-      - conf_object: 'DockerSpawner.host_ip'
-        value: "'0.0.0.0'"
-      - conf_object: 'DockerSpawner.volumes'
-        value: "{ '/tank/home/{username}': { 'bind': '/home/jupyter', 'mode': 'rw' } }"
-      - conf_object: 'Spawner.pre_spawn_hook'
-        value: 'create_fs_hook'
-
+jupyterhub_authenticator: shib
 
 jupyterhub_authenticators:
   shib:
