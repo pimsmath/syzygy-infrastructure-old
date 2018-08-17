@@ -13,7 +13,6 @@ jupyterhub_docker_container: 'docker.io/callysto/pims-minimal:latest'
 
 jupyterhub_announcement: ""
 jupyterhub_notebook_template_dir: "/tank/notebook_templates"
-
 jupyterhub_global_options:
   - conf_object: 'JupyterHub.admin_access'
     value: False
@@ -55,13 +54,22 @@ jupyterhub_spawners:
 jupyterhub_authenticator: 'pam'
 jupyterhub_authenticators:
   google:
-    name: 'oauthenticator.GoogleOAuthenticator'
+    name: 'syzygyauthenticator.google.SyzygyGoogleOAuthenticator'
     options:
-      - conf_object: 'GoogleOAuthenticator.client_id'
+      - conf_object: 'OAuthenticator.client_id'
         value: 'os.environ["OAUTH_CLIENT_ID"]'
-      - conf_object: 'GoogleOAuthenticator.client_secret'
+      - conf_object: 'OAuthenticator.client_secret'
         value: 'os.environ["OAUTH_CLIENT_SECRET"]'
-      - conf_object: 'GoogleOAuthenticator.callback_url'
+      - conf_object: 'OAuthenticator.callback_url'
+        value: 'os.environ["OAUTH_CALLBACK_URL"]'
+  github:
+    name: 'syzygyauthenticator.GitHub.SzyzgyGitHubOAuthenticator'
+    options:
+      - conf_object: 'OAuthenticator.client_id'
+        value: 'os.environ["OAUTH_CLIENT_ID"]'
+      - conf_object: 'OAuthenticator.client_secret'
+        value: 'os.environ["OAUTH_CLIENT_SECRET"]'
+      - conf_object: 'OAuthenticator.callback_url'
         value: 'os.environ["OAUTH_CALLBACK_URL"]'
   pam:
     name: 'jupyterhub.auth.PAMAuthenticator'
