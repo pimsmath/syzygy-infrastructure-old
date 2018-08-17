@@ -83,6 +83,10 @@
       tags: ["python", "python3"]
       include_role:
         name: ius-python3
+    
+    - name: Manage Docker storage
+      include_role:
+        name: docker-storage
 
     # Manage Docker
     - name: Manage Docker
@@ -110,19 +114,7 @@
         name: 'python-docker-py'
         state: 'present'
 
-    - name: Manage Docker storage
-      include_role:
-        name: docker-storage
-
-    # Manage Jupyterhub
-    # This role is tightly coupled to the following roles:
-    #   * dockerspawner
-    #   * ssp-idp-multi
-    #   * callysto-html
-    #   * syzygyauthenticator
-    # These roles should not be used independently.
-    # TODO: merge all of these roles into one?
     - name: Manage Jupyterhub
-      tags: ["jupyter", "jupyterhub", "ssp"]
+      tags: ["jupyter", "jupyterhub"]
       include_role:
         name: jupyterhub
