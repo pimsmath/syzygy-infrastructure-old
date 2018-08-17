@@ -84,10 +84,6 @@
       include_role:
         name: ius-python3
     
-    - name: Manage Docker storage
-      include_role:
-        name: docker-storage
-
     # Manage Docker
     - name: Manage Docker
       include_role:
@@ -113,6 +109,10 @@
       yum:
         name: 'python-docker-py'
         state: 'present'
+    
+    - name: Manage Docker storage
+      include_role:
+        name: docker-storage
 
     - name: Manage Jupyterhub
       tags: ["jupyter", "jupyterhub"]
