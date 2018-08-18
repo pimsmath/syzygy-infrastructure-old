@@ -1,25 +1,31 @@
-# Add any extra SSH keys here.
+# 
+html_longname: Syzygy
+
+# Add extra SSH keys requiring admin access can be added here
 #ssh_public_keys:
 
-admin_email: user@example.com
-zfs_vdev_config: /dev/vdc
+# Storage Configuration
+# Pay close attention to the device names used by your provider and use UUIDs
+# where possible. Mistakes here can easily repartition and erase storage
+# 
+#  * zfs_vdev_config: Accepts a VDEV specification, 
+#    e.g. "mirror /dev/vdc /dev/vdd"
+#  * openstack_ephemeral_docker_disk: Use instance ephemeral disk for docker.
+#    When specified it will partition the give device as a single large XFS
+#    filesystem and use the overlay2 driver for docker. For testing, leaving this
+#    value empty will result in the zfs /tank filesystme being used. 
+#    e.g. "/dev/vdb"
+#
+# zfs_vdev_config: /dev/vdc
+# openstack_ephemeral_docker_disk: /dev/vdb
 
-# Uncomment this to use overlay2
-# Keep this commented out to use ZFS
-#openstack_ephemeral_docker_disk: /dev/sdd
-
-# Domain and SSL settings
-domain: subdomain.example.com
 # Set to False to get a production-ready certificate
 dehydrate_test_cert: True
-
-# Required for the html template task
-html_longname: Syzygy
 
 # valid values:
 #   * dummy: username: anything, no password
 #   * dummypw: username: anything, password via jupyterhub_authenticator_dummy_password
-#   * shib: log in through ssp/shib
+#   * shib: log in through ssp/shib, this requires many more config options
 #   * pam: log in with system users
 #   * google: Log in with Google OAuthenticator
 #   * github: Log in with GitHub OAuthenticator
@@ -28,12 +34,6 @@ jupyterhub_authenticator: dummy
 
 # uncomment this when using the dummypw authenticator
 #jupyterhub_authenticator_dummy_password: dummy
-
-# valid values:
-#
-#   * syzygysystemuserspawner: standard
-#
-jupyterhub_spawner: dockerspawner
 
 # The docker image to use for notebooks
 jupyterhub_docker_image: 'docker.io/callysto/pims-minimal'

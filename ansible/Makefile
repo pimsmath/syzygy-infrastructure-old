@@ -7,25 +7,25 @@ ANSIBLE_CMD = TF_STATE=$(TF_PATH)/$(env) ansible --private-key=../keys/id_rsa --
 
 export PATH := $(TF_PATH)/bin/$(UNAME):$(PATH)
 
-setup:
+check-env:
+ifndef env
+	$(error env is not defined)
+endif
+
+setup: check-env
 	@echo "Setting up Ansible Inventory"
 	[[ -e "inventory" ]] || ln -s ./bin/$(UNAME)/ansible-terraform-inventory inventory
 	@echo ""
-	@echo "Creating group_vars/hub/local_vars.yml from the example template"
-	[[ -f "group_vars/hub/local_vars.yml" ]] || cp local_vars.yml.example group_vars/hub/local_vars.yml
+	@echo "Creating host_vars/<env>.syzygy.ca from the example template"
+	[[ -f "host_vars/local_vars.yml" ]] || cp local_vars.yml.example host_vars/$(env).syzygy.ca
 	@echo ""
-	@echo "Update group_vars/hub/local_vars.yml to fit your environment."
-	@echo "Don't forget to generate the SSL certificates for simplesamlphp if you're using it for authentication."
-	@echo "And don't forget to set dehydrate_test_cert to False if you're sure Let's Encrypt is working."
+	@echo "Update host_files/<env>.syzygy.ca to fit your environment."
+	@echo "Don't forget to set dehydrate_test_cert to False if you're sure Let's Encrypt is working."
 	@echo "Press enter to continue"
 	@read
 	@echo "Installing external Ansible roles"
 	/bin/bash scripts/role_update.sh
 
-check-env:
-ifndef env
-	$(error env is not defined)
-endif
 
 list-init-tasks:
 	ansible-playbook --list-tasks plays/init.yml
