@@ -32,7 +32,7 @@
     src: '{{ rrsync_local_home }}/{{ rrsync_public_key_path }}'
   register:
     rrsync_public_key
-  when: not rrsync_public_key is defined
+  when: not rrsync_public_key is defined and not ansible_check_mode
 
 - name: Install rrsync SSH private key if specified
   copy:
@@ -58,6 +58,7 @@
     dest: '{{ playbook_dir }}/../host_vars/files/authorized_keys/{{ inventory_hostname }}-authorized_keys'
   delegate_to: localhost
   become: False
+  when: not ansible_check_mode
 
 - name: Configure rrsync ssh
   ssh_config:
