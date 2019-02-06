@@ -19,6 +19,14 @@
   set_fact:
     rrsync_local_home: '{{ result.stdout }}'
 
+- name: Set permissions on homedir .ssh
+  file:
+    state: directory
+    owner: '{{ rrsync_local_user }}'
+    group: '{{ rrsync_local_user }}'
+    mode: 0700
+    path: '{{ rrsync_local_home }}/.ssh'
+
 - name: Generate ssh-keys if not specified
   user:
     name: '{{ rrsync_local_user }}'
