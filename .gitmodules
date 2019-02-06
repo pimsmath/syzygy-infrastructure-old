@@ -1,3 +1,6 @@
 [submodule "terraform"]
 	path = terraform
 	url = https://github.com/pimsmath/terraform-syzygy-infrastructure
+[submodule "ansible/host_vars"]
+	path = ansible/host_vars
+	url = https://github.com/pimsmath/syzygy-host-vars
