@@ -1,0 +1,45 @@
+<VirtualHost *:80>
+  ServerName {{ inventory_hostname }}
+  ServerAdmin {{ admin_email }}
+  ErrorLog /var/log/httpd/stats-error.log
+  LogLevel warn
+  CustomLog /var/log/httpd/stats-access.log combined
+
+  Redirect /(!.well-known/) https://{{ inventory_hostname }}/grafana/
+
+</VirtualHost>
+
+
+<VirtualHost *:443>
+  ServerName {{ inventory_hostname }}
+  ServerAdmin {{ admin_email }}
+
+  SSLEngine on
+  SSLCertificateFile /home/acme/certs/{{ inventory_hostname }}/cert.pem
+  SSLCertificateChainFile /home/acme/certs/{{ inventory_hostname }}/chain.pem
+  SSLCertificateKeyFile /home/acme/certs/{{ inventory_hostname }}/privkey.pem
+
+  SSLProxyEngine On
+  SSLProxyVerify none
+  SSLProxyCheckPeerCN off
+  SSLProxyCheckPeerName off
+  SSLProxyCheckPeerExpire off
+
+  Header always set Strict-Transport-Security "max-age=15768000"
+
+  RedirectMatch ^/$ "https://{{ inventory_hostname }}/grafana/"
+
+  <Location /grafana/>
+     ProxyPass http://127.0.0.1:3000/
+     ProxyPassReverse http://127.0.0.1:3000/
+     ProxyPreserveHost on
+  </Location>
+
+  <Location /prometheus/>
+     Require ip 142.103.59.77
+     Require ip 127.0.0.1
+     ProxyPass http://127.0.0.1:9090/prometheus/
+     ProxyPassReverse http://127.0.0.1:9090/prometheus/
+     ProxyPreserveHost on
+  </Location>
+</VirtualHost>

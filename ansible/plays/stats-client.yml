@@ -1,0 +1,17 @@
+---
+
+- name: Install and configure prometheus endpoints
+  hosts: hub
+  become: true
+  tasks:
+    - name: Prometheus node-exporter
+      include_role:
+        name: prometheus-node-exporter
+
+    - name: cAdvisor container
+      include_role:
+        name: prometheus-cadvisor
+
+    - name: Apache endpoints config
+      include_role:
+        name: prometheus-apache

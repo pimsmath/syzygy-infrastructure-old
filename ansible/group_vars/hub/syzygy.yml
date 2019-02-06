@@ -1,0 +1,12 @@
+admin_email: 'jupyter@pims.math.ca'
+
+domain: '{{ inventory_hostname }}'
+
+jupyterhub_html_family: 'syzygy-html'
+
+jupyterhub_docker_image: 'docker.io/callysto/pims-r-nr'
+
+html_longname: "Syzygy"
+syzygy_html_longname: "{{ html_longname }}"
+
+syzygyauthenticator_version: shib-ubc

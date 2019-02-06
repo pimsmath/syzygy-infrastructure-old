@@ -1,0 +1,6 @@
+---
+
+dependencies:
+  - prometheus-exporters-common
+
+
