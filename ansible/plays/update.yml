@@ -1,0 +1,35 @@
+---
+# This set of tasks are meant to be run only once,
+# after the infrastructure has been deployed by
+# Terraform.
+#
+- name: Initial tasks for Callysto Infrastructure
+  hosts: all
+  become: true
+  vars:
+        ansible_ssh_pipelining: no
+  tasks:
+    - name: Install Enterprise Linux kernel
+      include_role:
+        name: elrepo-kernel
+      vars:
+        elrepo_kernel_packages:
+          - { name: 'kernel-lt', state: 'latest' }
+          - { name: 'kernel-lt-devel', state: 'latest' }
+
+    - name: Update all packages
+      yum:
+        name: "*"
+        state: latest
+      ignore_errors: true
+
+    - name: Reboot instance
+      command: /sbin/shutdown -r +1
+      async: 0
+      poll: 0
+      ignore_errors: true
+
+    - name: wait for SSH access to come back
+      wait_for_connection:
+        delay: 65
+        timeout: 300

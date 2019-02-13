@@ -26,9 +26,11 @@ setup: check-env
 	@echo "Installing external Ansible roles"
 	/bin/bash scripts/role_update.sh
 
-
 list-init-tasks:
 	ansible-playbook --list-tasks plays/init.yml
+
+list-update-tasks:
+	ansible-playbook --list-tasks plays/update.yml
 
 list-hub-tasks:
 	ansible-playbook --list-tasks plays/hub.yml
@@ -38,6 +40,12 @@ hub/init/check: check-env
 
 hub/init/apply: check-env
 	$(PLAYBOOK_CMD) --limit hub plays/init.yml
+
+hub/update/check: check-env
+	$(PLAYBOOK_CMD) --limit hub --check --diff plays/update.yml
+
+hub/update/apply: check-env
+	$(PLAYBOOK_CMD) --limit hub plays/update.yml
 
 hub/check: check-env
 	$(PLAYBOOK_CMD) --limit hub --check --diff plays/hub.yml
