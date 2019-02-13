@@ -59,6 +59,12 @@ stats-server/init/check: check-env
 stats-server/init/apply: check-env
 	$(PLAYBOOK_CMD) --limit stats plays/init.yml
 
+stats-server/update/check: check-env
+	$(PLAYBOOK_CMD) --limit stats --check --diff plays/update.yml
+
+stats-server/update/apply: check-env
+	$(PLAYBOOK_CMD) --limit stats plays/update.yml
+
 stats-server/check: check-env
 	$(PLAYBOOK_CMD) --limit stats --check --diff plays/stats-server.yml
 
