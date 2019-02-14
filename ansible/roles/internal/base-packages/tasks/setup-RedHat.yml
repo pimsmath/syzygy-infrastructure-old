@@ -29,7 +29,7 @@
   become: yes
 
 - name: Copy yum-cron template
-  template:
+  copy:
     src: yum-cron.conf.j2
     dest: /etc/yum/yum-cron.conf
   become: yes
