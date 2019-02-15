@@ -1,0 +1,6 @@
+- labels:
+    type: 'jupyterhub'
+    group: 'syzygy'
+    host: '{{ inventory_hostname }}'
+    '__metrics_path__': '/metrics/jupyter/metrics'
+  targets: ['{{ inventory_hostname }}']

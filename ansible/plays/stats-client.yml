@@ -12,6 +12,10 @@
       include_role:
         name: prometheus-cadvisor
 
+    - name: Jupyterhub endpoints
+      include_role:
+        name: prometheus-jupyterhub
+
     - name: Apache endpoints config
       include_role:
         name: prometheus-apache
