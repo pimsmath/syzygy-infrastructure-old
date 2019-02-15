@@ -30,6 +30,6 @@
 
 - name: Copy yum-cron template
   copy:
-    src: yum-cron.conf.j2
+    src: yum-cron.conf
     dest: /etc/yum/yum-cron.conf
   become: yes
