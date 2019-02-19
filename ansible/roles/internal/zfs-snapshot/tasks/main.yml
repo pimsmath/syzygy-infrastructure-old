@@ -1,0 +1,33 @@
+---
+- name: Install Git
+  yum:
+    name: git
+    state: present
+
+- name: ZFS Auto Snapshot
+  git: 
+    repo: "https://github.com/zfsonlinux/zfs-auto-snapshot.git"
+    dest: "{{ zfs_auto_snap_dir }}"
+    version: '{{ zfs_auto_version }}'
+
+- name: Install ZFS Auto Snapshot
+  command: make install
+  args:
+    chdir: "{{ zfs_auto_snap_dir }}"
+    creates: "/usr/local/sbin/zfs-auto-snapshot"
+
+- name: Update cron file path
+  replace: 
+    dest: "{{ item.dest }}"
+    regexp: "^exec zfs-auto-snapshot"
+    replace: "exec /usr/local/sbin/zfs-auto-snapshot"
+  with_items:
+    - { dest: "/etc/cron.daily/zfs-auto-snapshot" }
+
+- name: Remove frequent and monthly snapshots
+  file: path="{{ item.path }}" state=absent
+  with_items:
+    - { path: "/etc/cron.hourly/zfs-auto-snapshot" }
+    - { path: "/etc/cron.weekly/zfs-auto-snapshot" }
+    - { path: "/etc/cron.monthly/zfs-auto-snapshot" }
+    - { path: "/etc/cron.d/zfs-auto-snapshot" }
