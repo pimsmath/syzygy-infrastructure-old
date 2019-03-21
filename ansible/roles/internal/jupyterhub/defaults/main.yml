@@ -47,7 +47,7 @@ jupyterhub_spawners:
     name: 'dockerspawner.DockerSpawner'
     options:
       - conf_object: 'DockerSpawner.extra_host_config'
-        value: "{'mem_limit': '2g', 'memswap_limit': '2g', 'cpu_period': 100000, 'cpu_quota': 100000 }"
+        value: "{'mem_limit': '2g', 'memswap_limit': '2g', 'cpu_period': 100000, 'cpu_quota': 100000, 'ulimits': [{'name': 'core', 'hard': 0}] }"
       - conf_object: 'DockerSpawner.remove_containers'
         value: True
       - conf_object: 'DockerSpawner.use_internal_ip'
