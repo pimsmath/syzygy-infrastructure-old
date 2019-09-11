@@ -1,17 +1,39 @@
-UNAME := $(shell uname)
+UNAME := $(shell uname | tr '[:upper:]' '[:lower:]')
+ARCH := $(shell uname -m)
 TOP := $(shell pwd)
 TF_PATH := $(TOP)/../terraform
 
-PLAYBOOK_CMD = TF_STATE=$(TF_PATH)/infrastructure/prod/$(env) ansible-playbook --private-key=../keys/id_rsa --vault-password-file=../keys/ansible-vault -i ./inventory
-ANSIBLE_CMD = TF_STATE=$(TF_PATH)/infrastructure/prod/$(env) ansible --private-key=../keys/id_rsa --vault-password-file=../keys/ansible-vault -i ./inventory
+PLAYBOOK_CMD = TF_STATE=$(TF_PATH)/infrastructure/prod/$(ENV) ansible-playbook --private-key=../keys/id_rsa --vault-password-file=../keys/ansible-vault -i ./inventory
+ANSIBLE_CMD = TF_STATE=$(TF_PATH)/infrastructure/prod/$(ENV) ansible --private-key=../keys/id_rsa --vault-password-file=../keys/ansible-vault -i ./inventory
+
+help: tasks
+
+tasks:
+	@grep -A1 ^HELP Makefile | gsed -e ':begin;$$!N;s/HELP: \(.*\)\n\(.*:\).*/\2 \1/;tbegin;P;D' | grep -v \\\-\\\- | sort | awk -F: '{printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
 
 export PATH := $(TF_PATH)/bin/$(UNAME):$(PATH)
 
-check-env:
-ifndef env
-	$(error env is not defined)
+check-playbook:
+ifndef PLAYBOOK
+	$(error PLAYBOOK is not defined [PLAYBOOK=])
+else
+export _PLAYBOOK = plays/$(PLAYBOOK).yml
 endif
 
+check-env:
+ifndef ENV 
+	$(error ENV is not defined)
+endif
+
+check-limit:
+ifndef LIMIT
+export _LIMIT = --limit all
+else
+export _LIMIT = --limit $(LIMIT)
+endif
+
+HELP: Setup environment and refresh external roles
 setup: check-env
 	@echo "Setting up Ansible Inventory"
 	[[ -e "inventory" ]] || ln -s ./bin/$(UNAME)/ansible-terraform-inventory inventory
@@ -26,53 +48,18 @@ setup: check-env
 	@echo "Installing external Ansible roles"
 	/bin/bash scripts/role_update.sh
 
-list-init-tasks:
-	ansible-playbook --list-tasks plays/init.yml
+HELP: Lists plays
+list-playbooks:
+	@grep -RH ^## plays | gsed -e 's/\(plays\/\)\(.*\)\(.yml\)/\2/' | sort | awk 'BEGIN {FS = ":## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-list-update-tasks:
-	ansible-playbook --list-tasks plays/update.yml
+HELP: Lists all hosts in $ENV
+hosts: check-env check-limit
+	$(ANSIBLE_CMD) --list-hosts $(_LIMIT) all
 
-list-hub-tasks:
-	ansible-playbook --list-tasks plays/hub.yml
+HELP: Run $PLAYBOOK ON $ENV
+playbook: check-env check-playbook check-limit
+	$(PLAYBOOK_CMD) $(_LIMIT) $(_PLAYBOOK)
 
-hub/init/check: check-env
-	$(PLAYBOOK_CMD) --limit hub --check --diff plays/init.yml
-
-hub/init/apply: check-env
-	$(PLAYBOOK_CMD) --limit hub plays/init.yml
-
-hub/update/check: check-env
-	$(PLAYBOOK_CMD) --limit hub --check --diff plays/update.yml
-
-hub/update/apply: check-env
-	$(PLAYBOOK_CMD) --limit hub plays/update.yml
-
-hub/check: check-env
-	$(PLAYBOOK_CMD) --limit hub --check --diff plays/hub.yml
-
-hub/apply: check-env
-	$(PLAYBOOK_CMD) --limit hub plays/hub.yml
-
-stats-server/init/check: check-env
-	$(PLAYBOOK_CMD) --limit stats --check --diff plays/init.yml
-
-stats-server/init/apply: check-env
-	$(PLAYBOOK_CMD) --limit stats plays/init.yml
-
-stats-server/update/check: check-env
-	$(PLAYBOOK_CMD) --limit stats --check --diff plays/update.yml
-
-stats-server/update/apply: check-env
-	$(PLAYBOOK_CMD) --limit stats plays/update.yml
-
-stats-server/check: check-env
-	$(PLAYBOOK_CMD) --limit stats --check --diff plays/stats-server.yml
-
-stats-server/apply: check-env
-	$(PLAYBOOK_CMD) --limit stats plays/stats-server.yml
-
-stats-client/check: check-env
-	$(PLAYBOOK_CMD) --limit hub --check --diff plays/stats-client.yml
-
-stats-client/apply: check-env
-	$(PLAYBOOK_CMD) --limit hub plays/stats-client.yml
+HELP: Run $PLAYBOOK ON $ENV in check-mode
+playbook/check: check-env check-playbook check-limit
+	$(PLAYBOOK_CMD) --check --diff $(_LIMIT) $(_PLAYBOOK)

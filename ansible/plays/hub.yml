@@ -1,3 +1,4 @@
+## Manages a JuptyerHub installation
 ---
 - name: Ensure sudo is configured correctly
   hosts: hub
