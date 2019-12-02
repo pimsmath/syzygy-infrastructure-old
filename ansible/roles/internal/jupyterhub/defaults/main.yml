@@ -119,3 +119,5 @@ shib_auth_logout_url: "https://{{ inventory_hostname }}/Shibboleth.sso/Logout?re
 jupyterhub_oauth_client_id: ""
 jupyterhub_oauth_client_secret: ""
 jupyterhub_oauth_callback_url: ""
+
+#jupyterhub_auth_username_salt: # Output of `openssl rand -hex 12`
