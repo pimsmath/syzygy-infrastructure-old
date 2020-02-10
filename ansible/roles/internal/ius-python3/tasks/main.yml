@@ -4,11 +4,6 @@
     src: ius.repo
     dest: /etc/yum.repos.d/ius.repo
 
-- name: Copy IUS GPG key
-  copy:
-    src: IUS-COMMUNITY-GPG-KEY
-    dest: /etc/pki/rpm-gpg/IUS-COMMUNITY-GPG-KEY
-
 - name: Install python3
   yum:
     name: '{{ item.name }}'

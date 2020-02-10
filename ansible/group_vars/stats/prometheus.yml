@@ -4,7 +4,7 @@ prometheus_exporters_common_log_dir: "{{ prometheus_exporters_common_root_dir }}
 prometheus_exporters_common_conf_dir: "{{ prometheus_exporters_common_root_dir }}/etc/prometheus/exporters"
 
 
-prometheus_node_exporter_version: 0.16.0
+prometheus_node_exporter_version: 0.18.1
 prometheus_node_exporter_enabled_collectors:
   - conntrack
   - cpu
@@ -21,6 +21,8 @@ prometheus_node_exporter_enabled_collectors:
   - textfile
   - time
   - vmstat
+  - zfs
+
 prometheus_node_exporter_config_flags:
    'web.listen-address': '127.0.0.1:9100'
    'log.level': 'info'
