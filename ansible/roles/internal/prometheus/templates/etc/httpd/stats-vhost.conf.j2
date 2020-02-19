@@ -5,7 +5,8 @@
   LogLevel warn
   CustomLog /var/log/httpd/stats-access.log combined
 
-  Redirect /(!.well-known/) https://{{ inventory_hostname }}/grafana/
+  RewriteEngine On
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}$1 [R=301,L]
 
 </VirtualHost>
 
@@ -25,9 +26,8 @@
   SSLProxyCheckPeerName off
   SSLProxyCheckPeerExpire off
 
-  Header always set Strict-Transport-Security "max-age=15768000"
-
-  RedirectMatch ^/$ "https://{{ inventory_hostname }}/grafana/"
+  Header always set Strict-Transport-Security "max-age=63072000"
+  Redirect "/" "https://stats.syzygy.ca/grafana/"
 
   <Location /grafana/>
      ProxyPass http://127.0.0.1:3000/
@@ -43,3 +43,13 @@
      ProxyPreserveHost on
   </Location>
 </VirtualHost>
+
+SSLProtocol             all -SSLv3 -TLSv1 -TLSv1.1
+SSLCipherSuite          ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384
+SSLHonorCipherOrder     off
+SSLSessionTickets       off
+
+
+SSLUseStapling On
+SSLStaplingCache "shmcb:logs/ssl_stapling(32768)"
+
