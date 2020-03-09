@@ -27,7 +27,7 @@
   SSLProxyCheckPeerExpire off
 
   Header always set Strict-Transport-Security "max-age=63072000"
-  Redirect "/" "https://stats.syzygy.ca/grafana/"
+  RedirectMatch 301 ^(?!/\.well-known/acme-challenge/).* https://{{ inventory_hostname }}/grafana/
 
   <Location /grafana/>
      ProxyPass http://127.0.0.1:3000/
