@@ -9,8 +9,9 @@
     name: dockerspawner
 
 - name: Manage Jupyterhub Docker Cull script
-  include_role:
-    name: jhub-docker-cull
+  pip:
+    name: jupyterhub-idle-culler
+    executable: pip3.6
 
 - name: Get Docker image for JupyterHub containers
   docker_image:
