@@ -33,7 +33,7 @@ jupyterhub_global_options:
                 'name': 'cull-idle',
                 'admin': True,
                 'command': [
-                    'sys.executable',
+                    sys.executable,
                     '-m', 'jupyterhub_idle_culler',
                     '--timeout={{ jhub_docker_cull_cull_s }}',
                 ]
