@@ -25,6 +25,3 @@ shib_forceauthn: 'true'
 # V3 configuration variables
 # shibboleth_sso_entity_id: 'https://authentication.ubc.ca'
 # shibboleth_sso_discovery_url: 'https://authentication.it.ubc.ca/idp/shibboleth'
-
-# ADFS uses it's own logout system which shibboleth2.xml needs to know
-shib_adfs_logout_url: ''
