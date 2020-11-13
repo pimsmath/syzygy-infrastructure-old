@@ -1,0 +1,12 @@
+---
+- name: Remove python36u config if it exists
+  file:
+    path: /etc/yum.repos.d/ius.repo
+    state: absent
+
+- name: Install python3
+  yum:
+    name: '{{ item.name }}'
+    state: '{{ item.state }}'
+    update_cache: yes
+  with_items: '{{ python3_packages }}'
