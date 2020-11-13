@@ -17,3 +17,4 @@ ansible/inventory
 letsencrypt/*/accounts
 letsencrypt/*/certs
 letsencrypt/*/chains
+ansible/group_vars/all/stats_api.yml
