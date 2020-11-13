@@ -25,5 +25,5 @@ prometheus_node_exporter_config_flags:
    'web.listen-address': '127.0.0.1:9100'
    'log.level': 'info'
 
-prom_cadvisor_image: 'pimsubc/cadvisor'
-prom_cadvisor_tag: 'reduced'
+prom_cadvisor_image: 'google/cadvisor'
+prom_cadvisor_tag: 'latest'

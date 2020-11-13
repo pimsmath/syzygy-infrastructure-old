@@ -27,7 +27,13 @@
   SSLProxyCheckPeerExpire off
 
   Header always set Strict-Transport-Security "max-age=63072000"
-  RedirectMatch 301 ^(?!/\.well-known/acme-challenge/).* https://{{ inventory_hostname }}/grafana/
+  #RedirectMatch 301 ^(?!/\.well-known/acme-challenge/).* https://{{ inventory_hostname }}/grafana/
+
+  RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge
+  RewriteCond %{REQUEST_URI} !^/public
+  RewriteCond %{REQUEST_URI} !^/grafana
+  RewriteCond %{REQUEST_URI} !^/prometheus
+  RewriteRule ^(.*)$ https://stats.syzygy.ca/grafana/$1 [R=301,L]
 
   <Location /grafana/>
      ProxyPass http://127.0.0.1:3000/
@@ -37,11 +43,18 @@
 
   <Location /prometheus/>
      Require ip 142.103.59.77
+     Require ip 24.84.222.54
      Require ip 127.0.0.1
      ProxyPass http://127.0.0.1:9090/prometheus/
      ProxyPassReverse http://127.0.0.1:9090/prometheus/
      ProxyPreserveHost on
   </Location>
+
+  Alias "/public" "/tank/public"
+  <Directory "/tank/public/">
+    Require all granted
+  </Directory>
+
 </VirtualHost>
 
 SSLProtocol             all -SSLv3 -TLSv1 -TLSv1.1

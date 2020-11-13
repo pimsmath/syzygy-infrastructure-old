@@ -32,6 +32,10 @@ c.JupyterHub.cookie_secret = {{ jupyterhub_cookie_secret }}
 {% endif -%}
 {% endblock -%}
 
+{% if jupyterhub_stats_api_token is defined %}
+c.JupyterHub.api_tokens = { '{{ jupyterhub_stats_api_token.token }}' : '{{ jupyterhub_stats_api_token.user }}' }
+{% endif -%}
+
 {% block spawner %}
 {% if jupyterhub_spawner in jupyterhub_spawners %}
 c.JupyterHub.spawner_class = '{{ jupyterhub_spawners[jupyterhub_spawner].name }}'

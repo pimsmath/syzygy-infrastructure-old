@@ -5,16 +5,14 @@
     name: '{{ prom_cadvisor_name }}'
     ports: '{{ prom_cadvisor_internal_port }}:{{ prom_cadvisor_external_port }}'
     state: started
-    command: '/usr/bin/cadvisor -logtostderr -disable_metrics=tcp,udp,disk -housekeeping_interval=20s -v 3'
+    command: '/usr/bin/cadvisor -logtostderr -disable_metrics=disk,diskIO -housekeeping_interval=20s -v 3'
     privileged: yes
     devices:
-      - "/dev/zfs"
     volumes: 
       - /:/rootfs:ro
       - /var/run:/var/run:rw
       - /sys:/sys:ro
       - /var/lib/docker:/var/lib/docker:ro
-      - /dev/zfs:/dev/zfs:ro
       - /cgroup:/cgroup:ro
 
 - name: Create file_sd_config fragment for prometheus
