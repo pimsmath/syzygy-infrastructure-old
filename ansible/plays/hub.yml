@@ -84,7 +84,7 @@
     - name: Manage Python3
       tags: ["python", "python3"]
       include_role:
-        name: ius-python3
+        name: python36
     
     # Manage Docker
     - name: Manage Docker

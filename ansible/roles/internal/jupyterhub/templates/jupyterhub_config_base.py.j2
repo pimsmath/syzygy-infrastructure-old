@@ -7,6 +7,9 @@ from subprocess import check_call
 
 def create_fs_hook(spawner):
       username = spawner.user.name
+{% if jupyterhub_authenticator == "google" %}
+      username = username.replace('.', '_2E')
+{% endif %}
       callysto_user = 'jupyter'
       check_call(['/opt/syzygyauthenticator/zfs-homedir.sh', username, callysto_user])
 
