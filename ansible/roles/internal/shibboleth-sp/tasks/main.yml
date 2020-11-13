@@ -113,6 +113,7 @@
     owner: root
     group: root
     mode: 0444
+    validate_certs: '{{ shib_idp_metadata_uri_validate | default("yes") }}'
   when: shib_idp_metadata_uri is defined
   notify: restart shibd
 
