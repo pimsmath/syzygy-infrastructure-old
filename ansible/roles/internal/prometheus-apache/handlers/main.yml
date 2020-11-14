@@ -1,5 +1,5 @@
 ---
 - name: graceful apache
   service:
-    name: '{{ apache_service }}'
+    name: '{{ prometheus_apache_service }}'
     state: reloaded
