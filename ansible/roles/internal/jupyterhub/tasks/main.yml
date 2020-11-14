@@ -16,6 +16,7 @@
 - name: Get Docker image for JupyterHub containers
   docker_image:
     name: '{{ jupyterhub_docker_container }}'
+    source: pull
   when: jupyterhub_spawner in ['dockerspawner', 'syzygyswiftspawner']
 
 - name: Manage syzygyauthenticator
