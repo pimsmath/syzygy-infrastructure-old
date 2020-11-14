@@ -9,6 +9,19 @@
     - Copy landing page templates
     - Update image assets
 
+- name: Check if target exists
+  stat:
+    path: '{{ syzygy_html_dir.dest }}'
+  register: site_exists
+
+- name: Rebuild site if target missing
+  debug:
+    msg: "Site content missing, rebuilding"
+  notify: 
+    - Copy landing page templates
+    - Update image assets
+  changed_when: site_exists.stat.exists == false
+
 - name: Flush handlers
   meta: flush_handlers
 

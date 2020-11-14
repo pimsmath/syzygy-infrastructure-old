@@ -7,8 +7,6 @@
       - httpd
       - mod_ssl
     state: absent
-  notify:
-    - Stop and disable httpd
 
 - name: Set httpd service name
   set_fact:
