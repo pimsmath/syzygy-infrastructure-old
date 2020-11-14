@@ -4,6 +4,16 @@
     path: /etc/yum.repos.d/ius.repo
     state: absent
 
+- name: Uninstall python36u
+  yum:
+    name:
+      - python36u-libs
+      - python36u-devel
+      - python36u
+      - python36u-pip
+      - python36u-setuptools
+    state: absent
+
 - name: Install python3
   yum:
     name: '{{ item.name }}'

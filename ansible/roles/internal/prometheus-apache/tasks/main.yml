@@ -2,7 +2,7 @@
 - name: add apache vhost configuration
   template:
     src: metrics.conf.j2
-    dest: '{{ apache_conf_path }}/metrics.conf
+    dest: '{{ prometheus_apache_conf_dir }}/metrics.conf'
     owner: root
     group: root
     mode: 0644
