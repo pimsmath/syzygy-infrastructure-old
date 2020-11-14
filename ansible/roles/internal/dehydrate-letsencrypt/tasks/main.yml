@@ -24,8 +24,6 @@
     owner: '{{ acme_user }}'
     group: '{{ acme_user }}'
   when: dehydrate_restore and dehydrate_local_file.stat.exists
-###
-
 
 - name: Create letsencrypt directories
   file: path={{ item.name }} state=directory owner=root group={{ acme_user }} mode={{ item.mode }}
@@ -57,7 +55,7 @@
 - name: Add config for dehydrated-letsencrypt
   template:
     src: "acme.conf.j2"
-    dest: "/etc/httpd/conf.d/acme.conf"
+    dest: '{{ apache_conf_path | default("/etc/httpd/conf.d") }}/acme.conf'
     mode: "0644"
     owner: root
     group: root

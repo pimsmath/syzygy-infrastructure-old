@@ -1,9 +1,9 @@
 <VirtualHost *:80>
   ServerName {{ inventory_hostname }}
   ServerAdmin {{ admin_email }}
-  ErrorLog /var/log/httpd/stats-error.log
+  ErrorLog {{ apache_log_dir | default("/var/log/httpd") }}/stats-error.log
   LogLevel warn
-  CustomLog /var/log/httpd/stats-access.log combined
+  CustomLog {{ apache_log_dir | default("/var/log/httpd") }}/stats-access.log combined
 
   RewriteEngine On
   RewriteRule ^(.*)$ https://%{HTTP_HOST}$1 [R=301,L]
@@ -54,6 +54,11 @@
   <Directory "/tank/public/">
     Require all granted
   </Directory>
+
+  ErrorLog {{ apache_log_dir | default('/var/log/httpd' }}/stats-ssl-error.log
+  LogLevel warn
+  CustomLog {{ apache_log_dir | default('/var/log/httpd' }}/stats-ssl-access.log combined
+
 
 </VirtualHost>
 

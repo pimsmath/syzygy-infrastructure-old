@@ -3,10 +3,15 @@
 import os
 import sys
 
+c.JupyterHub.services = []
+
 from subprocess import check_call
 
 def create_fs_hook(spawner):
       username = spawner.user.name
+{% if jupyterhub_authenticator == "google" %}
+      username = username.replace('.', '_2E')
+{% endif %}
       callysto_user = 'jupyter'
       check_call(['/opt/syzygyauthenticator/zfs-homedir.sh', username, callysto_user])
 
@@ -16,6 +21,10 @@ c.Spawner.pre_spawn_hook = create_fs_hook
 c.{{ global_option.conf_object }} = {{ global_option.value }}
 {% endfor %}
 
+{% if jupyterhub_services is defined %}
+c.JupyterHub.services.append( {{ jupyterhub_services }} )
+{% endif %}
+
 {% if jupyterhub_global_options_extra is defined %}
 {% for global_option in jupyterhub_global_options_extra %}
 c.{{ global_option.conf_object }} = {{ global_option.value }}
@@ -23,17 +32,24 @@ c.{{ global_option.conf_object }} = {{ global_option.value }}
 {% endif %}
 {% endblock %}
 
-{% block cookie -%}
+{% block proxy %}
 {% if jupyterhub_auth_token != "" -%}
-c.ConfigurableHTTPProxy.auth_token = {{ jupyterhub_auth_token }}
+c.ConfigurableHTTPProxy.auth_token = b'{{ jupyterhub_auth_token }}'
+c.JupyterHub.cleanup_servers = False
+c.ConfigurableHTTPProxy.should_start = False
+c.ConfigurableHTTPProxy.api_url = 'http://{{ jupyterhub_proxy_api_ip }}:{{ jupyterhub_proxy_api_port }}'
 {% endif -%}
+{% endblock %}
+
+{% block cookie -%}
 {% if jupyterhub_cookie_secret != "" -%}
-c.JupyterHub.cookie_secret = {{ jupyterhub_cookie_secret }}
+c.JupyterHub.cookie_secret = b'{{ jupyterhub_cookie_secret }}'
 {% endif -%}
 {% endblock -%}
 
-{% if jupyterhub_stats_api_token is defined %}
-c.JupyterHub.api_tokens = { '{{ jupyterhub_stats_api_token.token }}' : '{{ jupyterhub_stats_api_token.user }}' }
+{% if jupyterhub_stats_service_token is defined %}
+c.JupyterHub.service_tokens = { '{{ jupyterhub_stats_service_token.token }}' : '{{ jupyterhub_stats_service_token.user }}' }
+c.JupyterHub.services.append( { 'name': '{{ jupyterhub_stats_service_token.user }}', 'admin': False } )
 {% endif -%}
 
 {% block spawner %}

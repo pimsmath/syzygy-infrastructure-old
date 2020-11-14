@@ -2,13 +2,9 @@
   src: https://github.com/geerlingguy/ansible-role-ansible
   version: 1.3.0
 
-- name: apache
-  src: git+https://github.com/geerlingguy/ansible-role-apache.git
-  version: 2.1.1
-
 - name: docker
   src: https://github.com/geerlingguy/ansible-role-docker
-  version: 2.1.0
+  version: 2.9.0
 
 - name: firewalld
   src: https://github.com/marcelnijenhof/ansible-role-firewalld.git

@@ -103,7 +103,7 @@
 - name: add apache vhost configuration
   template:
     src: etc/httpd/stats-vhost.conf.j2
-    dest: /etc/httpd/conf.d/stats-vhost.conf
+    dest: '{{ apache_server_root | default("/etc/httpd") }}/conf.d/stats-vhost.conf'
     owner: root
     group: root
     mode: 0644

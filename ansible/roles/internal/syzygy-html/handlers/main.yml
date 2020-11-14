@@ -10,5 +10,5 @@
     dest: '{{ item.dest }}'
     force: yes
   with_items:
-    - { src: 'files/logo.png', dest: '/var/www/html/site/img/logo.png' }
-    - { src: 'files/login.png', dest: '/var/www/html/site/img/login.png' }
+    - { src: 'files/logo.png', dest: '{{ syzygy_html_dir.dest }}/img/logo.png' }
+    - { src: 'files/login.png', dest: '{{ syzygy_html_dir.dest }}/img/login.png' }

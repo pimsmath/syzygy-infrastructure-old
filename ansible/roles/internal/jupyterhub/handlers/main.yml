@@ -8,6 +8,11 @@
     enabled: yes
     state: started
 
+- name: Restart CHP
+  service:
+    name: configurable-http-proxy
+    state: restarted
+
 - name: Restart JupyterHub
   service:
     name: jupyterhub
