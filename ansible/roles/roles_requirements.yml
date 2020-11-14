@@ -4,7 +4,7 @@
 
 - name: docker
   src: https://github.com/geerlingguy/ansible-role-docker
-  version: 2.1.0
+  version: 2.9.0
 
 - name: firewalld
   src: https://github.com/marcelnijenhof/ansible-role-firewalld.git
