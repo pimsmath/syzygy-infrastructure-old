@@ -15,6 +15,13 @@
   tags: shibboleth
   with_items: '{{ shib_packages }}'
 
+- name: Copy apache shibboleth config
+  copy:
+    src: 20_shib_apache.conf
+    dest: "{{ apache_conf_path }}/20_shib.conf"
+  notify:
+    - restart apache
+
 - name: Add Shibboleth configuration files
   template:
     src: '{{ item.src }}'

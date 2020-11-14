@@ -73,7 +73,7 @@
     - name: Manage Apache
       tags: ["httpd"]
       include_role:
-        name: apache
+        name: httpd24-httpd
 
     # This requires the hub to have a resolvable FQDN.
     - name: Configure letsencrypt
@@ -90,6 +90,10 @@
     - name: Manage Docker
       include_role:
         name: docker
+
+    - name: Add Ansible user to docker group
+      include_role:
+        name: docker-extra
 
     # Manage nvidia-docker2
     - name: Manage nvidia-docker2

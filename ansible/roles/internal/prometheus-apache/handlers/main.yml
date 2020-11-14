@@ -1,5 +1,5 @@
 ---
 - name: graceful apache
-  shell: "apachectl graceful"
-
-    
+  service:
+    name: '{{ apache_service }}'
+    state: reloaded

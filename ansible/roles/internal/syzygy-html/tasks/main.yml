@@ -42,14 +42,14 @@
   notify:
     - restart apache
   lineinfile:
-    dest: '/etc/httpd/conf/httpd.conf'
+    dest: '{{ apache_server_root }}/conf/httpd.conf'
     regexp: '^DocumentRoot'
     line: 'DocumentRoot "{{ syzygy_html_dir.dest }}"'
 
 - name: Add httpd config for jupyter service
   template:
     src: jupyter-http.conf.j2
-    dest: /etc/httpd/conf.d/jupyter.conf
+    dest: '{{ apache_conf_path }}/jupyter.conf'
     mode: 0644
     owner: root
     group: root

@@ -62,7 +62,7 @@
     - name: Manage Apache
       tags: ["httpd"]
       include_role:
-        name: apache
+        name: httpd24-httpd
 
     # This requires the hub to have a resolvable FQDN.
     - name: Configure letsencrypt

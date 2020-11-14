@@ -6,7 +6,7 @@ syzygy_html_url: "http://{{ inventory_hostname }}"
 
 syzygy_html_dir:
   src: /opt/hub-landing-page
-  dest: /var/www/html/site
+  dest: '{{ apache_document_root | default("/var/www/html") }}/site'
 
 syzygy_html_logout_message: "You have been logged out of your Jupyter Session"
 

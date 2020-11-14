@@ -11,9 +11,9 @@ RequestHeader unset Shib-Authentication-Instant
 
 <VirtualHost *:80>
   ServerName {{ inventory_hostname }}
-  ErrorLog /var/log/httpd/jupyter-error.log
+  ErrorLog {{ apache_log_dir | default("/var/log/httpd") }}/jupyter-error.log
   LogLevel warn
-  CustomLog /var/log/httpd/jupyter-access.log combined
+  CustomLog {{ apache_log_dir | default("/var/log/httpd") }}/jupyter-access.log combined
 
   Redirect / https://{{ inventory_hostname }}/
 </VirtualHost>
@@ -43,9 +43,8 @@ RequestHeader unset Shib-Authentication-Instant
   </Location>
 {% endif %}
 
-  <Directory "/var/www/html/site">
-    Order allow,deny
-    Allow from all
+  <Directory "{{ apache_document_root | default('/var/www/html') }}/site">
+    Require all granted
   </Directory>
 
   <Location /jupyter>
@@ -84,9 +83,9 @@ RequestHeader unset Shib-Authentication-Instant
   </LocationMatch>
 
 
-  ErrorLog /var/log/httpd/jupyter-ssl-error.log
+  ErrorLog {{ apache_log_dir | default('/var/log/httpd') }}/jupyter-ssl-error.log
   LogLevel warn
-  CustomLog /var/log/httpd/jupyter-ssl-access.log combined
+  CustomLog {{ apache_log_dir | default('/var/log/httpd') }}/jupyter-ssl-access.log combined
 
 </VirtualHost>
 
