@@ -2,12 +2,15 @@
 Description=JupyterHub - Multi-user Jupyter notebook service.
 After=network.target docker.service
 Requires=docker.service
+{% if jupyterhub_auth_token %}
+Wants=configurable-http-proxy
+{% endif %}
 
 [Service]
 EnvironmentFile=-/etc/sysconfig/jupyterhub
 PIDFile={{ jupyterhub_srv_dir }}/jupyterhub.pid
 WorkingDirectory={{ jupyterhub_srv_dir }}
-ExecStart=/usr/local/bin/jupyterhub -f ${JUPYTERHUB}/jupyterhub_config.py --pid-file ${JUPYTERHUB}/jupyterhub.pid
+ExecStart=/usr/local/bin/jupyterhub -f ${JUPYTERHUB}/jupyterhub_config.py --pid-file ${JUPYTERHUB}/jupyterhub.pid --upgrade-db
 ExecStop=/bin/kill $MAINPID
 Restart=on-failure
 RestartSec=20s
