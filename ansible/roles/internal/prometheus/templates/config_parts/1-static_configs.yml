@@ -27,8 +27,8 @@ scrape_configs:
   
   - job_name: 'jupyterhub.syzygy.ca'
     scheme: 'https'
-{% if jupyterhub_stats_api_token is defined %}
-    bearer_token: '{{ jupyterhub_stats_api_token.token }}'
+{% if jupyterhub_stats_server_token is defined %}
+    bearer_token: '{{ jupyterhub_stats_server_token.token }}'
 {% endif %}
     file_sd_configs:
       - files:
