@@ -55,9 +55,9 @@
     Require all granted
   </Directory>
 
-  ErrorLog {{ apache_log_dir | default('/var/log/httpd' }}/stats-ssl-error.log
+  ErrorLog {{ apache_log_dir | default('/var/log/httpd') }}/stats-ssl-error.log
   LogLevel warn
-  CustomLog {{ apache_log_dir | default('/var/log/httpd' }}/stats-ssl-access.log combined
+  CustomLog {{ apache_log_dir | default('/var/log/httpd') }}/stats-ssl-access.log combined
 
 
 </VirtualHost>

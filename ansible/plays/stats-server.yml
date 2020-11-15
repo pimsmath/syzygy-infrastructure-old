@@ -73,12 +73,16 @@
     - name: Manage Python3
       tags: ["python", "python3"]
       include_role:
-        name: ius-python3
+        name: python36
 
     # Manage Docker
     - name: Manage Docker
       include_role:
         name: docker
+
+    - name: Manage Docker extra
+      include_role:
+        name: docker-extra
 
     - name: Add interfaces their respective zones
       firewalld:
