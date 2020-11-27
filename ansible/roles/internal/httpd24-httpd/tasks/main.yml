@@ -38,6 +38,11 @@
     name: "{{ httpd24_httpd_modules }}"
     state: present
 
+- name: Remove mpm-prefork config
+  copy:
+    src: '00-mpm.conf'
+    dest: '{{ apache_server_root }}/conf.modules.d/00-mpm.conf'
+
 - name: Apache 2.4 SCL | set apache service status
   service:
     name: "{{ httpd24_httpd_service_name }}"
