@@ -17,6 +17,12 @@
     zfs_distro_version: "{{ ansible_distribution_version }}"
   when: ansible_distribution != "CentOS"
 
+- name: Install kernel headers
+  yum:
+    name: kernel-devel
+    state: present
+    update_cache: yes
+
 - name: Copy ZFS yum repo
   template:
     src: zfs.repo.j2
