@@ -1,4 +1,5 @@
 syzygy_hub_landing_page_repo: "https://github.com/pimsmath/syzygy-landing-page"
+syzygy_landing_branch: "hugo-gh-pages"
 syzygy_html_hostname: "{{ inventory_hostname }}"
 syzygy_html_domain: "syzygy.ca"
 syzygy_html_support_email: "jupyter@pims.math.ca"

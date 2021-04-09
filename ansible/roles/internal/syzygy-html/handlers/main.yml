@@ -3,12 +3,3 @@
   shell: "rm -rf {{ syzygy_html_dir.dest }} && mkdir {{ syzygy_html_dir.dest }} && git archive {{ syzygy_landing_branch }} | tar -x -C {{ syzygy_html_dir.dest }}"
   args:
     chdir: '{{ syzygy_html_dir.src }}'
-
-- name: Update image assets
-  copy:
-    src: '{{ item.src }}'
-    dest: '{{ item.dest }}'
-    force: yes
-  with_items:
-    - { src: 'files/logo.png', dest: '{{ syzygy_html_dir.dest }}/img/logo.png' }
-    - { src: 'files/login.png', dest: '{{ syzygy_html_dir.dest }}/img/login.png' }

@@ -1,4 +1,19 @@
 ---
+- name: Set html target dir
+  set_fact:
+    syzygy_html_dir: "{{ syzygy_html_dir }}"
+
+- name: Create the DocumentRoot
+  file:
+    path: '{{ item.path }}'
+    state: directory
+    owner: '{{ item.owner | default("root") }}'
+    group: '{{ item.group | default("root") }}'
+    mode: '{{ item.mode | default("0755") }}'
+  with_items:
+    - path: '{{ syzygy_html_dir.dest }}'
+      state: directory
+
 - name: Install HTML files
   git:
     repo: '{{ syzygy_hub_landing_page_repo }}'
@@ -7,20 +22,6 @@
     ssh_opts: "-o StrictHostKeyChecking=no"
   notify:
     - Copy landing page templates
-    - Update image assets
-
-- name: Check if target exists
-  stat:
-    path: '{{ syzygy_html_dir.dest }}'
-  register: site_exists
-
-- name: Rebuild site if target missing
-  debug:
-    msg: "Site content missing, rebuilding"
-  notify: 
-    - Copy landing page templates
-    - Update image assets
-  changed_when: site_exists.stat.exists == false
 
 - name: Flush handlers
   meta: flush_handlers
@@ -35,8 +36,6 @@
   with_items:
     - src: '{{ syzygy_html_dir.src }}/index.html'
       dest: '/var/tmp/syzygy-html-index.html'
-    - src: '{{ syzygy_html_dir.src }}/logout/index.html'
-      dest: '/var/tmp/syzygy-html-logout-index.html'
 
 - name: Process html template and send results back to host
   template:
@@ -48,8 +47,16 @@
   with_items:
     - dest: '{{ syzygy_html_dir.dest }}/index.html'
       src: '/var/tmp/syzygy-html-index.html'
-    - dest: '{{ syzygy_html_dir.dest }}/logout/index.html'
-      src: '/var/tmp/syzygy-html-logout-index.html'
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Add apache config
+  template:
+    src: jupyter-http.conf.j2
+    dest: "{{ apache_conf_path }}/jupyter-http.conf"
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart apache
 
 - name: Update DocumentRoot
   notify:
@@ -58,12 +65,3 @@
     dest: '{{ apache_server_root }}/conf/httpd.conf'
     regexp: '^DocumentRoot'
     line: 'DocumentRoot "{{ syzygy_html_dir.dest }}"'
-
-- name: Add httpd config for jupyter service
-  template:
-    src: jupyter-http.conf.j2
-    dest: '{{ apache_conf_path }}/jupyter.conf'
-    mode: 0644
-    owner: root
-    group: root
-  notify: restart apache
