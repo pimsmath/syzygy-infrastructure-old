@@ -6,12 +6,9 @@
   src: https://github.com/geerlingguy/ansible-role-docker
   version: 2.9.0
 
-- name: firewalld
-  src: https://github.com/marcelnijenhof/ansible-role-firewalld.git
-
 - name: sshd
   src: git+https://github.com/willshersystems/ansible-sshd.git
-  version: v0.7.6
+  version: v0.12.0
 
 - name: sudo
   src:  https://github.com/weareinteractive/ansible-sudo
@@ -20,3 +17,7 @@
 - name: ssh_config
   src: https://github.com/gaqzi/ansible-ssh-config
   path: library
+
+- name: flatkey.firewalld
+  src: https://github.com/FlatKey/ansible-firewalld-role
+  version: v1.3.0

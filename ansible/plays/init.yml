@@ -3,7 +3,7 @@
 # after the infrastructure has been deployed by
 # Terraform.
 #
-- name: Initial tasks for Callysto Infrastructure
+- name: Initial tasks for Syzygy Infrastructure
   hosts: all
   become: true
   vars:
@@ -14,13 +14,6 @@
         name: "*"
         state: latest
       ignore_errors: true
-
-    - name: Install Enterprise Linux kernel
-      include_role:
-        name: elrepo-kernel
-
-    - name: Flush any handlers before reboot
-      meta: flush_handlers
 
     - name: Check needs-restarting status
       command: needs-restarting -r
