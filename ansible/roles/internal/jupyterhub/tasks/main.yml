@@ -11,7 +11,7 @@
 - name: Manage Jupyterhub Docker Cull
   pip:
     name: jupyterhub-idle-culler
-    executable: pip3.6
+    executable: '{{ python3_pip_executable }}'
 
 - name: Get Docker image for JupyterHub containers
   docker_image:
@@ -24,7 +24,7 @@
     name: syzygyauthenticator
 
 - name: Install OAuthenticator
-  pip: name='oauthenticator' executable='pip3.6'
+  pip: name='oauthenticator' executable='{{ python3_pip_executable }}'
   when: jupyterhub_authenticator == 'google'
 
 - name: Manage Shibboleth SP
@@ -49,14 +49,14 @@
 - name: Install pycurl
   pip:
     name: pycurl
-    executable: pip3.6
+    executable: '{{ python3_pip_executable }}'
   environment:
     PYCURL_SSL_LIBRARY: nss
 
 - name: Install Jupyterhub
   pip:
     name: jupyterhub
-    executable: pip3.6
+    executable: '{{ python3_pip_executable }}'
 
 - name: Install node packages
   yum:
@@ -108,14 +108,6 @@
     dest: /etc/systemd/system/configurable-http-proxy.service
   notify:
     - Restart CHP
-
-- name: Add jupyterhub port to to home zone (assume firewalld)
-  firewalld:
-    zone: "home"
-    port: "{{ jupyterhub_api_port }}/tcp"
-    immediate: yes
-    state: enabled
-    permanent: true
 
 - name: Ensure jupyterhub_notebook_template_dir exists
   file:
