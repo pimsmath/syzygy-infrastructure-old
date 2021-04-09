@@ -38,6 +38,16 @@
     name: "{{ httpd24_httpd_modules }}"
     state: present
 
+- name: Configure base
+  copy:
+    src: '{{ item }}'
+    dest: '{{ apache_conf_path }}/'
+  with_items:
+    - welcome.conf
+    - ssl.conf
+    - autoindex.conf
+    - userdir.conf
+
 - name: Remove mpm-prefork config
   copy:
     src: '00-mpm.conf'
