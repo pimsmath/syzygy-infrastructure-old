@@ -48,8 +48,7 @@ c.JupyterHub.cookie_secret = b'{{ jupyterhub_cookie_secret }}'
 {% endblock -%}
 
 {% if jupyterhub_stats_service_token is defined %}
-c.JupyterHub.service_tokens = { '{{ jupyterhub_stats_service_token.token }}' : '{{ jupyterhub_stats_service_token.user }}' }
-c.JupyterHub.services.append( { 'name': '{{ jupyterhub_stats_service_token.user }}', 'admin': False } )
+c.JupyterHub.services.append( { 'name': '{{ jupyterhub_stats_service_token.user }}', 'admin': False, 'api_token': '{{ jupyterhub_stats_service_token.token }}' } )
 {% endif -%}
 
 {% block spawner %}
