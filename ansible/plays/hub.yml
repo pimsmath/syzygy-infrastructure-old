@@ -118,6 +118,11 @@
       include_role:
         name: docker-storage
 
+    - name: Manage NodeJS
+      tags: ["nodejs", "npm"]
+      include_role:
+        name: nodejs
+
     - name: Manage Jupyterhub
       tags: ["jupyter", "jupyterhub"]
       include_role:

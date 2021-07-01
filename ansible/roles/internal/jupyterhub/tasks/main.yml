@@ -58,16 +58,12 @@
     name: jupyterhub
     executable: '{{ python3_pip_executable }}'
 
-- name: Install node packages
-  yum:
-    name: nodejs
-    state: present
-
 - name: Install configurable-http-proxy
   npm:
     name: configurable-http-proxy
     state: present
     global: yes
+    version: '{{ jupyterhub_chp_version }}'
 
 - name: Create JupyterHub Config Directory
   file:

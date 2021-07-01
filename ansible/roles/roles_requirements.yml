@@ -6,6 +6,10 @@
   src: https://github.com/geerlingguy/ansible-role-docker
   version: 2.9.0
 
+- name: nodejs
+  src: https://github.com/geerlingguy/ansible-role-nodejs
+  version: 5.1.1
+
 - name: sshd
   src: git+https://github.com/willshersystems/ansible-sshd.git
   version: v0.12.0
@@ -21,3 +25,4 @@
 - name: flatkey.firewalld
   src: https://github.com/FlatKey/ansible-firewalld-role
   version: v1.3.0
+
