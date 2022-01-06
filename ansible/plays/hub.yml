@@ -13,6 +13,7 @@
       vars:
           ansible_ssh_pipelining: no
 
+
 - name: Install and configure the hub
   hosts: hub
   become: true
@@ -21,13 +22,17 @@
       tags: ["hostname"]
       ansible.builtin.hostname:
         name: "{{ inventory_hostname }}"
-# 
-#     # Add relevant keys to `ssh_public_keys`
-#     # in either host_vars, group_vars, or local_vars.
-#     - name: Manage SSH public keys
-#       tags: ["ssh"]
-#       include_role:
-#         name: ssh-public-keys
+
+    # Add relevant keys to `ssh_public_keys`
+    # in either host_vars, group_vars, or local_vars.
+    - name: Manage SSH public keys
+      tags: ["ssh"]
+      ansible.posix.authorized_key:
+        user: "{{ item.value.user }}"
+        state: "{{ item.value.state }}"
+        key: "{{ item.value.public_key }}"
+      with_dict: "{{ ssh_public_keys }}"
+      when: ssh_public_keys is defined
 # 
 #     # This also installs EPEL
 #     - name: Ensure base packages are installed
