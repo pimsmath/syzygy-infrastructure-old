@@ -9,7 +9,7 @@ COLOR_RED='\e[0;31m'
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 ROOT_DIR=$(cd "$DIR/../" && pwd)
 EXTERNAL_ROLE_DIR="$ROOT_DIR/roles/external"
-ROLES_REQUIREMNTS_FILE="$ROOT_DIR/roles/roles_requirements.yml"
+ROLES_REQUIREMNTS_FILE="$ROOT_DIR/roles/requirements.yml"
 
 # Exit msg
 msg_exit() {
@@ -45,6 +45,7 @@ fi
 
 
 # Install roles
-ansible-galaxy install -r "$ROLES_REQUIREMNTS_FILE" --force --no-deps -p "$EXTERNAL_ROLE_DIR"
+ansible-galaxy collection install -r "$ROLES_REQUIREMNTS_FILE" --force --no-deps -p "$EXTERNAL_ROLE_DIR"
+ansible-galaxy role install -r "$ROLES_REQUIREMNTS_FILE" --force --no-deps -p "$EXTERNAL_ROLE_DIR"
 
 exit 0
