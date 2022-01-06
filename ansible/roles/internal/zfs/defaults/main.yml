@@ -1,5 +1,5 @@
 zfs_pool_name: tank
-zfs_module_dkms: true
+zfs_module_dkms: false
 #
 # A string containing a valid zfs vdev specification
 # e.g. 

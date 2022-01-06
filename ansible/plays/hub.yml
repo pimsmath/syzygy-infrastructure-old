@@ -38,9 +38,10 @@
   roles:
     - { role: geerlingguy.repo-epel, become: yes }
     - { role: weareinteractive.sudo, become: yes }
-- name: Install and configure the hub
-  hosts: hub
-  become: true
+    - role: zfs
+      become: true
+      tags:
+        - zfs
 
 # 
 #     # This will create and manage a zpool based on
