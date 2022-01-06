@@ -9,7 +9,7 @@
     - name: Configure sudo
       tags: ["sudo", "always"]
       include_role:
-        name: sudo
+        name: weareinteractive.sudo
       vars:
           ansible_ssh_pipelining: no
 
@@ -19,116 +19,116 @@
   tasks:
     - name: Ensure hostname is set
       tags: ["hostname"]
-      include_role:
-        name: hostname
-
-    # Add relevant keys to `ssh_public_keys`
-    # in either host_vars, group_vars, or local_vars.
-    - name: Manage SSH public keys
-      tags: ["ssh"]
-      include_role:
-        name: ssh-public-keys
-
-    # This also installs EPEL
-    - name: Ensure base packages are installed
-      tags: ["base-packages"]
-      include_role:
-        name: base-packages
-
-    # This will create and manage a zpool based on
-    # `zfs_disk_1` and `zfs_disk_2` defined in local_vars.yml.
-    - name: Manage ZFS
-      tags: ["zfs"]
-      include_role:
-        name: zfs
-    
-    - name: Manage ZFS Snapshot
-      tags: ["zfs"]
-      include_role:
-        name: zfs-snapshot
-
-    - name: Configure SELinux
-      tags: ["selinux"]
-      include_role:
-        name: selinux
-      vars:
-        selinux_policy: targeted
-        selinux_state: permissive
-
-    # Enabled services are defined in
-    # group_vars/hub/firewalld.yml
-    #
-    # The jupyterhub role also enables access
-    # to `jupyterhub_api_port`.
-    - name: Ensure firewalld is configured
-      tags: ["firewalld"]
-      include_role:
-        name: flatkey.firewalld
-
-    # Configuration is stored in
-    # group_vars/<group>/ssh.yml.
-    - name: Ensure sshd is installed and running
-      tags: ["sshd"]
-      include_role:
-        name: sshd
-
-    # Configuration is stored in
-    # group_vars/<group>/httpd.yml
-    - name: Manage Apache
-      tags: ["httpd"]
-      include_role:
-        name: httpd24-httpd
-
-    # This requires the hub to have a resolvable FQDN.
-    - name: Configure letsencrypt
-      tags: ["ssl", "letsencrypt", "httpd"]
-      include_role:
-        name: dehydrate-letsencrypt
-
-    - name: Manage Python3
-      tags: ["python", "python3"]
-      include_role:
-        name: python38
-    
-    # Manage Docker
-    - name: Manage Docker
-      include_role:
-        name: docker
-
-    - name: Add Ansible user to docker group
-      include_role:
-        name: docker-extra
-
-    # Manage nvidia-docker2
-    - name: Manage nvidia-docker2
-      include_role:
-        name: nvidia-docker
-      when: nvidia_docker_install|default(False)
-
-    - name: update facts if docker0 is not defined
-      action: setup filter="ansible_docker0"
-      when: ansible_docker0 is not defined
-
-    - name: Install docker module
-      yum:
-        name: 'python-docker-py'
-        state: 'present'
-    
-    - name: Manage Docker storage
-      include_role:
-        name: docker-storage
-
-    - name: Manage NodeJS
-      tags: ["nodejs", "npm"]
-      include_role:
-        name: nodejs
-
-    - name: Manage Jupyterhub
-      tags: ["jupyter", "jupyterhub"]
-      include_role:
-        name: jupyterhub
-
-    - name: Manage rrsync
-      tags: ["ssh", "rrsync", "backup"]
-      include_role:
-        name: rrsync
+      ansible.builtin.hostname:
+        name: "{{ inventory_hostname }}"
+# 
+#     # Add relevant keys to `ssh_public_keys`
+#     # in either host_vars, group_vars, or local_vars.
+#     - name: Manage SSH public keys
+#       tags: ["ssh"]
+#       include_role:
+#         name: ssh-public-keys
+# 
+#     # This also installs EPEL
+#     - name: Ensure base packages are installed
+#       tags: ["base-packages"]
+#       include_role:
+#         name: base-packages
+# 
+#     # This will create and manage a zpool based on
+#     # `zfs_disk_1` and `zfs_disk_2` defined in local_vars.yml.
+#     - name: Manage ZFS
+#       tags: ["zfs"]
+#       include_role:
+#         name: zfs
+#     
+#     - name: Manage ZFS Snapshot
+#       tags: ["zfs"]
+#       include_role:
+#         name: zfs-snapshot
+# 
+#     - name: Configure SELinux
+#       tags: ["selinux"]
+#       include_role:
+#         name: selinux
+#       vars:
+#         selinux_policy: targeted
+#         selinux_state: permissive
+# 
+#     # Enabled services are defined in
+#     # group_vars/hub/firewalld.yml
+#     #
+#     # The jupyterhub role also enables access
+#     # to `jupyterhub_api_port`.
+#     - name: Ensure firewalld is configured
+#       tags: ["firewalld"]
+#       include_role:
+#         name: flatkey.firewalld
+# 
+#     # Configuration is stored in
+#     # group_vars/<group>/ssh.yml.
+#     - name: Ensure sshd is installed and running
+#       tags: ["sshd"]
+#       include_role:
+#         name: sshd
+# 
+#     # Configuration is stored in
+#     # group_vars/<group>/httpd.yml
+#     - name: Manage Apache
+#       tags: ["httpd"]
+#       include_role:
+#         name: httpd24-httpd
+# 
+#     # This requires the hub to have a resolvable FQDN.
+#     - name: Configure letsencrypt
+#       tags: ["ssl", "letsencrypt", "httpd"]
+#       include_role:
+#         name: dehydrate-letsencrypt
+# 
+#     - name: Manage Python3
+#       tags: ["python", "python3"]
+#       include_role:
+#         name: python38
+#     
+#     # Manage Docker
+#     - name: Manage Docker
+#       include_role:
+#         name: docker
+# 
+#     - name: Add Ansible user to docker group
+#       include_role:
+#         name: docker-extra
+# 
+#     # Manage nvidia-docker2
+#     - name: Manage nvidia-docker2
+#       include_role:
+#         name: nvidia-docker
+#       when: nvidia_docker_install|default(False)
+# 
+#     - name: update facts if docker0 is not defined
+#       action: setup filter="ansible_docker0"
+#       when: ansible_docker0 is not defined
+# 
+#     - name: Install docker module
+#       yum:
+#         name: 'python-docker-py'
+#         state: 'present'
+#     
+#     - name: Manage Docker storage
+#       include_role:
+#         name: docker-storage
+# 
+#     - name: Manage NodeJS
+#       tags: ["nodejs", "npm"]
+#       include_role:
+#         name: nodejs
+# 
+#     - name: Manage Jupyterhub
+#       tags: ["jupyter", "jupyterhub"]
+#       include_role:
+#         name: jupyterhub
+# 
+#     - name: Manage rrsync
+#       tags: ["ssh", "rrsync", "backup"]
+#       include_role:
+#         name: rrsync
