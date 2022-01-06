@@ -1,0 +1,5 @@
+base_packages:
+  - git
+  - vim
+  - tmux
+  - wget

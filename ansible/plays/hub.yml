@@ -1,24 +1,10 @@
 ## Manages a JuptyerHub installation
 ---
-- name: Ensure sudo is configured correctly
+- name: Setup generic environment
   hosts: hub
-  become: true
-  tasks:
-    # Settings are defined in
-    # group_vars/<group>/sudo.yml
-    - name: Configure sudo
-      tags: ["sudo", "always"]
-      include_role:
-        name: weareinteractive.sudo
-      vars:
-          ansible_ssh_pipelining: no
-
-
-- name: Install and configure the hub
-  hosts: hub
-  become: true
   tasks:
     - name: Ensure hostname is set
+      become: true
       tags: ["hostname"]
       ansible.builtin.hostname:
         name: "{{ inventory_hostname }}"
@@ -33,12 +19,24 @@
         key: "{{ item.value.public_key }}"
       with_dict: "{{ ssh_public_keys }}"
       when: ssh_public_keys is defined
-# 
-#     # This also installs EPEL
-#     - name: Ensure base packages are installed
-#       tags: ["base-packages"]
-#       include_role:
-#         name: base-packages
+
+    - name: Install Base Packages
+      become: true
+      tags: ["base-packages"]
+      ansible.builtin.yum:
+        name: "{{ item }}"
+        state: present
+      with_items: "{{ base_packages }}"
+      when: base_packages is defined
+
+  roles:
+    - { role: geerlingguy.repo-epel, become: yes }
+    - { role: weareinteractive.sudo, become: yes }
+
+- name: Install and configure the hub
+  hosts: hub
+  become: true
+
 # 
 #     # This will create and manage a zpool based on
 #     # `zfs_disk_1` and `zfs_disk_2` defined in local_vars.yml.
