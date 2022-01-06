@@ -35,6 +35,26 @@
         policy: targeted
         state: permissive
 
+    - name: Install firewalld
+      become: true
+      tags:
+        - firewalld
+      ansible.builtin.yum:
+        name: firewalld
+        state: present
+
+    - name: Poke firewall holes
+      become: true
+      tags:
+        - firewalld
+      ansible.posix.firewalld:
+        service: "{{ item.value.service }}"
+        permanent: "{{ item.value.permanent | default('yes') }}"
+        state: "{{ item.value.state }}"
+        zone: "{{ item.value.zone }}"
+      with_dict: "{{ firewalld_service_rules }}"
+      when: firewalld_service_rules is defined
+
   roles:
     - { role: geerlingguy.repo-epel, become: yes }
     - { role: weareinteractive.sudo, become: yes }
@@ -42,29 +62,11 @@
       become: true
       tags:
         - zfs
+    - role: zfs-snapshot
+      become: true
+      tags:
+        - zfs
 
-# 
-#     # This will create and manage a zpool based on
-#     # `zfs_disk_1` and `zfs_disk_2` defined in local_vars.yml.
-#     - name: Manage ZFS
-#       tags: ["zfs"]
-#       include_role:
-#         name: zfs
-#     
-#     - name: Manage ZFS Snapshot
-#       tags: ["zfs"]
-#       include_role:
-#         name: zfs-snapshot
-# 
-#     # Enabled services are defined in
-#     # group_vars/hub/firewalld.yml
-#     #
-#     # The jupyterhub role also enables access
-#     # to `jupyterhub_api_port`.
-#     - name: Ensure firewalld is configured
-#       tags: ["firewalld"]
-#       include_role:
-#         name: flatkey.firewalld
 # 
 #     # Configuration is stored in
 #     # group_vars/<group>/ssh.yml.
