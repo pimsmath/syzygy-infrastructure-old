@@ -29,10 +29,15 @@
       with_items: "{{ base_packages }}"
       when: base_packages is defined
 
+    - name: Set SELinux as permissive
+      become: true
+      ansible.posix.selinux:
+        policy: targeted
+        state: permissive
+
   roles:
     - { role: geerlingguy.repo-epel, become: yes }
     - { role: weareinteractive.sudo, become: yes }
-
 - name: Install and configure the hub
   hosts: hub
   become: true
