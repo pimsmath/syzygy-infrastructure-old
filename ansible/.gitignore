@@ -12,6 +12,7 @@
 keys/id_rsa*
 keys/ansible-vault
 roles/external
+collections/external
 group_vars/*/local_vars.yml
 host_vars/*
 inventory

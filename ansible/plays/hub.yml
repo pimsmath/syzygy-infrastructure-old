@@ -55,14 +55,6 @@
 #       include_role:
 #         name: zfs-snapshot
 # 
-#     - name: Configure SELinux
-#       tags: ["selinux"]
-#       include_role:
-#         name: selinux
-#       vars:
-#         selinux_policy: targeted
-#         selinux_state: permissive
-# 
 #     # Enabled services are defined in
 #     # group_vars/hub/firewalld.yml
 #     #

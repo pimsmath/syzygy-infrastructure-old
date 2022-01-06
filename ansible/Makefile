@@ -33,6 +33,13 @@ else
 export _LIMIT = --limit $(LIMIT)
 endif
 
+check-tags:
+ifndef TAGS
+export _TAGS = ""
+else
+export _TAGS =--tags $(TAGS)
+endif
+
 HELP: Setup environment and refresh external roles
 setup: check-env
 	@echo "Setting up Ansible Inventory"
@@ -57,9 +64,9 @@ hosts: check-env check-limit
 	$(ANSIBLE_CMD) --list-hosts $(_LIMIT) all
 
 HELP: Run $PLAYBOOK ON $ENV
-playbook: check-env check-playbook check-limit
-	$(PLAYBOOK_CMD) $(_LIMIT) $(_PLAYBOOK)
+playbook: check-env check-playbook check-limit check-tags
+	$(PLAYBOOK_CMD) $(_LIMIT) $(_PLAYBOOK) $(_TAGS)
 
 HELP: Run $PLAYBOOK ON $ENV in check-mode
-playbook/check: check-env check-playbook check-limit
-	$(PLAYBOOK_CMD) --check --diff $(_LIMIT) $(_PLAYBOOK)
+playbook/check: check-env check-playbook check-limit check-tags
+	$(PLAYBOOK_CMD) --check --diff $(_LIMIT) $(_PLAYBOOK) $(_TAGS)
