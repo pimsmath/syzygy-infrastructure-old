@@ -1,4 +1,8 @@
 ---
+dehydrated_repo_url: "https://github.com/dehydrated-io/dehydrated.git"
+dehydrated_install_root: "/opt/dehydrated"
+dehydrated_version: "v0.7.0"
+
 acme_user: "acme"
 acme_home: "/home/acme"
 acme_email: "{{ admin_email }}"

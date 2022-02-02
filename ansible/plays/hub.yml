@@ -65,6 +65,12 @@
       tags:
         - httpd
 
+    - role: dehydrated-letsencrypt
+      become: yes
+      tags:
+        - httpd
+        - ssl
+
     - role: zfs
       become: true
       tags:
@@ -75,13 +81,6 @@
       tags:
         - zfs
 
-#     # Configuration is stored in
-#     # group_vars/<group>/httpd.yml
-#     - name: Manage Apache
-#       tags: ["httpd"]
-#       include_role:
-#         name: httpd24-httpd
-# 
 #     # This requires the hub to have a resolvable FQDN.
 #     - name: Configure letsencrypt
 #       tags: ["ssl", "letsencrypt", "httpd"]

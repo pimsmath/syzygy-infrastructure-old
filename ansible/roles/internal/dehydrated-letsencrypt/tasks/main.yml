@@ -32,16 +32,14 @@
     - { name: "{{ acme_home }}/accounts",  mode: "0770" }
     - { name: "{{ acme_home }}/archive",   mode: "0770" }
     - { name: "{{ acme_home }}/certs",     mode: "0770" }
-    - { name: "{{ acme_home }}/chains",     mode: "0770" }
+    - { name: "{{ acme_home }}/chains",    mode: "0770" }
     - { name: "{{ acme_home }}/challenge", mode: "0771" }
 
-- name: Grab letsencrypt script
-  get_url:
-    url: "https://raw.githubusercontent.com/lukas2511/dehydrated/master/dehydrated"
-    dest: "{{ acme_home }}/dehydrated"
-    owner: root
-    group: "{{ acme_user }}"
-    mode: 0750
+- name: Grab dehydrated repo
+  ansible.builtin.git:
+    repo: "{{ dehydrated_repo_url }}"
+    dest: "{{ dehydrated_install_root }}"
+    version: "{{ dehydrated_version }}"
 
 - name: Collect letsencrypt config
   template: src={{ item.src }} dest={{ item.dest }} owner=root group={{ acme_user }} mode={{ item.mode }}
