@@ -59,10 +59,17 @@
     - { role: geerlingguy.repo-epel, become: yes }
     - { role: weareinteractive.sudo, become: yes }
     - { role: devsec.hardening.ssh_hardening, become: yes }
+
+    - role: geerlingguy.apache
+      become: yes
+      tags:
+        - httpd
+
     - role: zfs
       become: true
       tags:
         - zfs
+
     - role: zfs-snapshot
       become: true
       tags:
