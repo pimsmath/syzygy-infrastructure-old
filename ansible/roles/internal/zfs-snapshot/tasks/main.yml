@@ -1,8 +1,11 @@
 ---
-- name: Install Git
+- name: Install dependencies (git and make)
   yum:
-    name: git
-    state: present
+    name: "{{ item.name }}"
+    state: "{{ item.state | default('present') }}"
+  with_items:
+    - { name: 'git' }
+    - { name: 'make' }
 
 - name: ZFS Auto Snapshot
   git: 
