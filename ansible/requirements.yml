@@ -20,3 +20,6 @@ collections:
   - name: community.general
     version: 4.2.0
     source: https://galaxy.ansible.com
+  - name: devsec.hardening
+    version: 7.14.0
+    source: https://galaxy.ansible.com

@@ -58,6 +58,7 @@
   roles:
     - { role: geerlingguy.repo-epel, become: yes }
     - { role: weareinteractive.sudo, become: yes }
+    - { role: devsec.hardening.ssh_hardening, become: yes }
     - role: zfs
       become: true
       tags:
@@ -67,14 +68,6 @@
       tags:
         - zfs
 
-# 
-#     # Configuration is stored in
-#     # group_vars/<group>/ssh.yml.
-#     - name: Ensure sshd is installed and running
-#       tags: ["sshd"]
-#       include_role:
-#         name: sshd
-# 
 #     # Configuration is stored in
 #     # group_vars/<group>/httpd.yml
 #     - name: Manage Apache
