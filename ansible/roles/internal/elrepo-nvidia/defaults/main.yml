@@ -1,4 +1,0 @@
----
-elrepo: "elrepo"
-elrepo_nvidia_packages:
-  - { name: 'kmod-nvidia', state: 'present' }
