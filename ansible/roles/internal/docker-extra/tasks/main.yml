@@ -13,3 +13,31 @@
     owner: root
     group: root
     mode: '0755'
+
+- name: Check the current filesystem
+  command: "lsblk -no fstype {{ openstack_ephemeral_docker_disk }}"
+  when: openstack_ephemeral_docker_disk != ""
+  register: filesystem_ephemeral
+  check_mode: no
+  changed_when: false
+
+- name: Create an XFS filesystem on the storage
+  filesystem:
+    fstype: xfs
+    force: true
+    dev: '{{ openstack_ephemeral_docker_disk }}'
+  when: openstack_ephemeral_docker_disk != "" and "xfs" not in filesystem_ephemeral.stdout
+  register: restartdocker_ephemeral
+
+- name: Mount the ephemeral for docker
+  mount:
+    src: '{{ openstack_ephemeral_docker_disk}}'
+    path: '/var/lib/docker'
+    fstype: 'xfs'
+    state: 'mounted'
+  when: openstack_ephemeral_docker_disk != ""
+  register: restartdocker_ephemeral
+
+- name: Install python bindings for docker
+  ansible.builtin.pip:
+    name: docker

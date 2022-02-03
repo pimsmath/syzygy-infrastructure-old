@@ -1,2 +1,5 @@
+openstack_ephemeral_docker_disk: ""
+docker_zfs_pool: ""
+
 docker_user: '{{ ansible_user }}'
 docker_group: docker

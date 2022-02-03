@@ -55,6 +55,24 @@
       with_dict: "{{ firewalld_service_rules }}"
       when: firewalld_service_rules is defined
 
+    - name: Install Python Environment
+      become: true
+      tags:
+        - python
+      ansible.builtin.yum:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - python39
+        - python39-pip
+        - python39-devel
+
+    - name: Configure Python3.9 as our default
+      become: true
+      tags:
+        - python
+      command: alternatives --set python3 /usr/bin/python3.9
+
   roles:
     - { role: geerlingguy.repo-epel, become: yes }
     - { role: weareinteractive.sudo, become: yes }
@@ -81,35 +99,15 @@
       tags:
         - zfs
 
-#     # This requires the hub to have a resolvable FQDN.
-#     - name: Configure letsencrypt
-#       tags: ["ssl", "letsencrypt", "httpd"]
-#       include_role:
-#         name: dehydrate-letsencrypt
-# 
-#     - name: Manage Python3
-#       tags: ["python", "python3"]
-#       include_role:
-#         name: python38
-#     
-#     # Manage Docker
-#     - name: Manage Docker
-#       include_role:
-#         name: docker
-# 
-#     - name: Add Ansible user to docker group
-#       include_role:
-#         name: docker-extra
-# 
-#     # Manage nvidia-docker2
-#     - name: Manage nvidia-docker2
-#       include_role:
-#         name: nvidia-docker
-#       when: nvidia_docker_install|default(False)
-# 
-#     - name: update facts if docker0 is not defined
-#       action: setup filter="ansible_docker0"
-#       when: ansible_docker0 is not defined
+    - role: geerlingguy.docker
+      become: yes
+      tags:
+        - docker
+ 
+    - role: docker-extra
+      become: yes
+      tags:
+        - docker
 # 
 #     - name: Install docker module
 #       yum:
@@ -134,3 +132,6 @@
 #       tags: ["ssh", "rrsync", "backup"]
 #       include_role:
 #         name: rrsync
+#
+  post_tasks:
+
