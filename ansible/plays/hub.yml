@@ -71,7 +71,9 @@
       become: true
       tags:
         - python
-      command: alternatives --set python3 /usr/bin/python3.9
+      community.general.alternatives:
+        name: python3
+        path: /usr/bin/python3.9
 
   roles:
     - { role: geerlingguy.repo-epel, become: yes }
@@ -108,16 +110,13 @@
       become: yes
       tags:
         - docker
-# 
-#     - name: Install docker module
-#       yum:
-#         name: 'python-docker-py'
-#         state: 'present'
-#     
-#     - name: Manage Docker storage
-#       include_role:
-#         name: docker-storage
-# 
+
+    - role: geerlingguy.nodejs
+      become: yes
+      tags:
+        - nodejs
+        - npm
+
 #     - name: Manage NodeJS
 #       tags: ["nodejs", "npm"]
 #       include_role:
