@@ -17,6 +17,22 @@ def create_fs_hook(spawner):
 
 c.Spawner.pre_spawn_hook = create_fs_hook
 
+c.JupyterHub.load_roles = [
+  {
+    "name": "stats",
+    "scopes": ["read:metrics"],
+    "services": ["stats"]
+  },
+  {
+    "name": "idle-culler",
+    "services": ["cull-idle"],
+    "scopes": [
+      "read:users:activity",
+      "servers",
+      "admin:users"
+    ]
+  }
+]
 {% for global_option in jupyterhub_global_options %}
 c.{{ global_option.conf_object }} = {{ global_option.value }}
 {% endfor %}
