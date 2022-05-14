@@ -20,3 +20,8 @@ OAUTH_CALLBACK_URL={{ jupyterhub_oauth_callback_url }}
 {% if jupyterhub_auth_username_salt is defined -%}
 SHIB_SALT={{ jupyterhub_auth_username_salt }}
 {% endif %}
+
+{% if python3_bin is defined -%}
+PATH={{ python3_bin }}:$PATH
+{% endif %}
+
