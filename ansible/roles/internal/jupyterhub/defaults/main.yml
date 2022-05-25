@@ -58,7 +58,7 @@ jupyterhub_spawners:
     options:
       - conf_object: 'DockerSpawner.extra_host_config'
         value: "{'mem_limit': '2g', 'memswap_limit': '2g', 'cpu_period': 100000, 'cpu_quota': 100000, 'ulimits': [{'name': 'core', 'hard': 0}] }"
-      - conf_object: 'DockerSpawner.remove_containers'
+      - conf_object: 'DockerSpawner.remove'
         value: True
       - conf_object: 'DockerSpawner.use_internal_ip'
         value: "True"
@@ -80,7 +80,7 @@ jupyterhub_authenticators:
         value: 'os.environ["OAUTH_CLIENT_ID"]'
       - conf_object: 'OAuthenticator.client_secret'
         value: 'os.environ["OAUTH_CLIENT_SECRET"]'
-      - conf_object: 'OAuthenticator.callback_url'
+      - conf_object: 'OAuthenticator.oauth_callback_url'
         value: 'os.environ["OAUTH_CALLBACK_URL"]'
   github:
     name: 'syzygyauthenticator.github.SyzygyGitHubOAuthenticator'
@@ -89,7 +89,7 @@ jupyterhub_authenticators:
         value: 'os.environ["OAUTH_CLIENT_ID"]'
       - conf_object: 'OAuthenticator.client_secret'
         value: 'os.environ["OAUTH_CLIENT_SECRET"]'
-      - conf_object: 'OAuthenticator.callback_url'
+      - conf_object: 'OAuthenticator.oauth_callback_url'
         value: 'os.environ["OAUTH_CALLBACK_URL"]'
   pam:
     name: 'jupyterhub.auth.PAMAuthenticator'
