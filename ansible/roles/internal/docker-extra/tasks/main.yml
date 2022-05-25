@@ -41,3 +41,7 @@
 - name: Install python bindings for docker
   ansible.builtin.pip:
     name: docker
+
+- name: resart docekr
+  service: name=docker state=restarted
+  when: restartdocker_ephemeral.changed
