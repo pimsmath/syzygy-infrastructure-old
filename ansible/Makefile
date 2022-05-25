@@ -35,7 +35,7 @@ endif
 
 check-tags:
 ifndef TAGS
-export _TAGS = ""
+export _TAGS =
 else
 export _TAGS =--tags $(TAGS)
 endif
