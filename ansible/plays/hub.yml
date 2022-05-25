@@ -75,6 +75,9 @@
         name: python3
         path: /usr/bin/python3.9
 
+
+- name: Apply roles
+  hosts: hub
   roles:
     - { role: geerlingguy.repo-epel, become: yes }
     - { role: weareinteractive.sudo, become: yes }
