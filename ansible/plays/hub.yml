@@ -67,15 +67,6 @@
         - python39-pip
         - python39-devel
 
-    - name: Configure Python3.9 as our default
-      become: true
-      tags:
-        - python
-      community.general.alternatives:
-        name: python3
-        path: /usr/bin/python3.9
-
-
 - name: Apply roles
   hosts: hub
   roles:
@@ -120,20 +111,15 @@
         - nodejs
         - npm
 
-#     - name: Manage NodeJS
-#       tags: ["nodejs", "npm"]
-#       include_role:
-#         name: nodejs
-# 
-#     - name: Manage Jupyterhub
-#       tags: ["jupyter", "jupyterhub"]
-#       include_role:
-#         name: jupyterhub
-# 
-#     - name: Manage rrsync
-#       tags: ["ssh", "rrsync", "backup"]
-#       include_role:
-#         name: rrsync
-#
-  post_tasks:
-
+    - role: jupyterhub
+      become: yes
+      tags:
+        - jupyter
+        - jupyterhub
+ 
+    - role: rrsync
+      become: yes
+      tags:
+        - ssh
+        - rrsync
+        - backup
