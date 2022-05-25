@@ -68,8 +68,14 @@
   become: False
   when: not ansible_check_mode
 
+# ssh_config management relies on stormssh
+- name: Dependencies
+  pip:
+    name: stormssh
+    state: present
+
 - name: Configure rrsync ssh
-  ssh_config:
+  community.general.ssh_config:
     state: present
     user: "{{ rrsync_local_user }}"
     host: "{{ rrsync_remote_host }}"
