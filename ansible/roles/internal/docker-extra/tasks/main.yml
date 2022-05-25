@@ -42,6 +42,6 @@
   ansible.builtin.pip:
     name: docker
 
-- name: resart docekr
+- name: Restart docker
   service: name=docker state=restarted
   when: restartdocker_ephemeral.changed
