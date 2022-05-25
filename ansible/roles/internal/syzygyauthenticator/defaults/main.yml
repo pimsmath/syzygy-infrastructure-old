@@ -1,4 +1,6 @@
 ---
+# Package name
+syzygyauthenticator: syzygyauthenticator
 syzygyauthenticator_repo: https://github.com/callysto/syzygyauthenticator
 syzygyauthenticator_version: master
 syzygyauthenticator_dir: /opt/syzygyauthenticator

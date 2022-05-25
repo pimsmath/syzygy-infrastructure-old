@@ -7,5 +7,7 @@
 
 - name: Install the syzygyauthenticator
   pip:
-    name: '{{ syzygyauthenticator_dir }}'
+    chdir: '{{ syzygyauthenticator_dir }}'
+    name: 'file:///{{ syzygyauthenticator_dir }}'
+    editable: yes
     executable: '{{ python3_pip_executable }}'
