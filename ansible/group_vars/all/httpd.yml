@@ -1,2 +1,2 @@
-prometheus_apache_conf_dir: /opt/rh/httpd24/root/etc/httpd/conf.d
-prometheus_apache_service: httpd24-httpd
+prometheus_apache_conf_dir: /etc/httpd/conf.d
+prometheus_apache_service: httpd
