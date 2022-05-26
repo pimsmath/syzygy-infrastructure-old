@@ -1,13 +1,5 @@
 ---
-- name: Install the syzygyauthenticator from github
-  git:
-    repo: '{{ syzygyauthenticator_repo }}'
-    dest: '{{ syzygyauthenticator_dir }}'
-    version: '{{ syzygyauthenticator_version }}'
-
 - name: Install the syzygyauthenticator
   pip:
-    chdir: '{{ syzygyauthenticator_dir }}'
-    name: 'file:///{{ syzygyauthenticator_dir }}'
-    editable: yes
+    name: '{{ syzygyauthenticator_repo }}@{{ syzygyauthenticator_branch }}#{{ syzygyauthenticator_version }}'
     executable: '{{ python3_pip_executable }}'
