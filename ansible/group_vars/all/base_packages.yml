@@ -3,3 +3,4 @@ base_packages:
   - vim
   - tmux
   - wget
+  - python36-devel
