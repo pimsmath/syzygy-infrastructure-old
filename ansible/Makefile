@@ -3,8 +3,10 @@ ARCH := $(shell uname -m)
 TOP := $(shell pwd)
 TF_PATH := $(TOP)/../terraform
 
-PLAYBOOK_CMD = TF_STATE=$(TF_PATH)/infrastructure/prod/$(ENV) ansible-playbook --private-key=../keys/id_rsa --vault-password-file=../keys/ansible-vault -i ./inventory
-ANSIBLE_CMD = TF_STATE=$(TF_PATH)/infrastructure/prod/$(ENV) ansible --private-key=../keys/id_rsa --vault-password-file=../keys/ansible-vault -i ./inventory
+GROUP ?= prod
+
+PLAYBOOK_CMD = TF_STATE=$(TF_PATH)/infrastructure/$(GROUP)/$(ENV) ansible-playbook --private-key=../keys/id_rsa --vault-password-file=../keys/ansible-vault -i ./inventory
+ANSIBLE_CMD = TF_STATE=$(TF_PATH)/infrastructure/$(GROUP)/$(ENV) ansible --private-key=../keys/id_rsa --vault-password-file=../keys/ansible-vault -i ./inventory
 
 help: tasks
 
@@ -22,7 +24,7 @@ export _PLAYBOOK = plays/$(PLAYBOOK).yml
 endif
 
 check-env:
-ifndef ENV 
+ifndef ENV
 	$(error ENV is not defined)
 endif
 
