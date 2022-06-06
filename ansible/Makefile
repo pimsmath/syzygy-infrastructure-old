@@ -5,8 +5,8 @@ TF_PATH := $(TOP)/../terraform
 
 GROUP ?= prod
 
-PLAYBOOK_CMD = TF_STATE=$(TF_PATH)/infrastructure/$(GROUP)/$(ENV) ansible-playbook --private-key=../keys/id_rsa --vault-password-file=../keys/ansible-vault -i ./inventory
-ANSIBLE_CMD = TF_STATE=$(TF_PATH)/infrastructure/$(GROUP)/$(ENV) ansible --private-key=../keys/id_rsa --vault-password-file=../keys/ansible-vault -i ./inventory
+PLAYBOOK_CMD = TF_STATE=$(TF_PATH)/infrastructure/$(GROUP)/$(ENV) ansible-playbook --vault-password-file=../keys/ansible-vault -i ./inventory
+ANSIBLE_CMD = TF_STATE=$(TF_PATH)/infrastructure/$(GROUP)/$(ENV) ansible  --vault-password-file=../keys/ansible-vault -i ./inventory
 
 help: tasks
 
