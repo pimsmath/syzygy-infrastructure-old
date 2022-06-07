@@ -24,7 +24,7 @@
 - name: Create an XFS filesystem on the storage
   filesystem:
     fstype: xfs
-    force: true
+    force: yes
     dev: '{{ openstack_ephemeral_docker_disk }}'
   when: openstack_ephemeral_docker_disk != "" and "xfs" not in filesystem_ephemeral.stdout
   register: restartdocker_ephemeral
