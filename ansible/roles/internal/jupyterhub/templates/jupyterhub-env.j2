@@ -19,4 +19,12 @@ OAUTH_CALLBACK_URL={{ jupyterhub_oauth_callback_url }}
 
 {% if jupyterhub_auth_username_salt is defined -%}
 SHIB_SALT={{ jupyterhub_auth_username_salt }}
-{% endif %}
+{% endif -%}
+
+{% if jupyterhub_lti_client_key is defined %}
+LTI_CLIENT_KEY={{ jupyterhub_lti_client_key }}
+{% endif -%}
+
+{% if jupyterhub_lti_client_secret is defined %}
+LTI_CLIENT_SECRET={{ jupyterhub_lti_client_secret }}
+{% endif -%}

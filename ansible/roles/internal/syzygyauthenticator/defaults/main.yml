@@ -2,7 +2,7 @@
 # Package name
 syzygyauthenticator: syzygyauthenticator
 syzygyauthenticator_repo: git+https://github.com/callysto/syzygyauthenticator
-syzygyauthenticator_version: 0.1.0
+syzygyauthenticator_version: 0.1.2
 syzygyauthenticator_branch: shib-ubc
 syzygyauthenticator_dir: /opt/syzygyauthenticator
 

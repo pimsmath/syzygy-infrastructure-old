@@ -27,8 +27,21 @@ jupyterhub_announcement: ""
 jupyterhub_notebook_template_dir: "/tank/notebook_templates"
 jupyterhub_hub_template_dir: "/tank/hub_templates"
 
+jupyterhub_roles: |
+  [
+    {
+      "name": "idle-culler",
+      "scopes": [
+        "read:users:activity",
+        "servers",
+        "admin:users"
+      ]
+    }
+  ]
+
 jupyterhub_services: |
-  {
+  [
+    {
       'name': 'cull-idle',
       'admin': True,
       'command': [
@@ -37,7 +50,8 @@ jupyterhub_services: |
           'jupyterhub_idle_culler', 
           '--timeout={{ jhub_docker_cull_cull_s }}'
       ]
-  }
+    }
+  ]
 
 jupyterhub_global_options:
   - conf_object: 'JupyterHub.admin_access'
@@ -73,6 +87,13 @@ jupyterhub_spawners:
 
 jupyterhub_authenticator: 'pam'
 jupyterhub_authenticators:
+  ltiauthenticator:
+    name: 'ltiauthenticator.LTIAuthenticator'
+    options:
+      - conf_object: 'LTIAuthenticator.consumers'
+        value: "{ os.environ['LTI_CLIENT_KEY']: os.environ['LTI_CLIENT_SECRET'] }"
+
+
   google:
     name: 'syzygyauthenticator.google.SyzygyGoogleOAuthenticator'
     options:

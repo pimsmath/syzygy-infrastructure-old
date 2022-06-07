@@ -2,7 +2,6 @@
 {% block global %}
 import os
 import sys
-import syzygyauthenticator
 
 c.JupyterHub.services = []
 
@@ -14,11 +13,7 @@ def create_fs_hook(spawner):
       username = username.replace('.', '_2E')
 {% endif %}
       callysto_user = 'jupyter'
-      check_call([
-        os.path.join(syzygyauthenticator.__path__[0], 'scripts/zfs-homedir.sh'),
-        username,
-        callysto_user
-      ]) 
+      check_call(['/opt/syzygyauthenticator/zfs-homedir.sh', username, callysto_user])
 
 c.Spawner.pre_spawn_hook = create_fs_hook
 
