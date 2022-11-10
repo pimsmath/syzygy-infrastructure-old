@@ -9,6 +9,11 @@
   vars:
         ansible_ssh_pipelining: no
   tasks:
+    - name: Install yum-utils for need-restarting
+      yum:
+        name: 'yum-utils'
+        state: 'present'
+
     - name: Update all packages
       yum:
         name: "*"
