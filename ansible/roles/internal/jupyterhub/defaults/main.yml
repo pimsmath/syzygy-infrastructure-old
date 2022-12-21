@@ -30,7 +30,6 @@ jupyterhub_hub_template_dir: "/tank/hub_templates"
 jupyterhub_services: |
   {
       'name': 'cull-idle',
-      'admin': True,
       'command': [
           sys.executable, 
           '-m', 
