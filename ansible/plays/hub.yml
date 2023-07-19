@@ -29,6 +29,14 @@
       with_items: "{{ base_packages }}"
       when: base_packages is defined
 
+    - name: Set Python3.9 as the default
+      become: true
+      community.general.alternatives:
+        name: python3
+        path: /usr/bin/python3.9
+        link: /usr/bin/python3
+
+          
     - name: Set SELinux as permissive
       become: true
       ansible.posix.selinux:
@@ -119,6 +127,8 @@
  
     - role: rrsync
       become: yes
+      vars:
+        ansible_python_interpreter: /usr/bin/python3
       tags:
         - ssh
         - rrsync
