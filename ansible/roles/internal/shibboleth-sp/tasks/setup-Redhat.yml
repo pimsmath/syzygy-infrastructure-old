@@ -98,7 +98,7 @@
     owner: root
     group: root
     mode: 0444
-  when: shib_idp_metadata_uri is defined
+  when: shib_idp_metadata_uri is defined and changed
   notify: restart shibd
 
 - name: Populate IdP metadata from file

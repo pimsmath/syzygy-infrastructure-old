@@ -4,8 +4,8 @@
   include_vars: "{{ ansible_os_family }}.yml"
 
 - name: Configure Shibboleth YUM repository
-  copy:
-    src: shibboleth.repo
+  template:
+    src: shibboleth.repo.j2
     dest: /etc/yum.repos.d/shibboleth.repo
 
 - name: Install Shibboleth packages
@@ -112,6 +112,11 @@
 
 ###
 # Some sites only provide an xml file, some provide a URL as well
+#
+# N.B. Some systems (ADFS!) always returna different result when a URI is
+# specified. That means the URI task below will always be changed and force a
+# start of shibd. This is no big deal, but if you want to avoid it, download
+# the idp metadata and use the file method
 #
 - name: Populate IdP metadata from uri
   get_url:
