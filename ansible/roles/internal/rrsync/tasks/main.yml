@@ -71,7 +71,9 @@
 # ssh_config management relies on stormssh
 - name: Dependencies
   pip:
-    name: stormssh
+    executable: '{{ python3_pip_executable }}'
+    name:
+      - 'paramiko'
     state: present
 
 - name: Configure rrsync ssh
