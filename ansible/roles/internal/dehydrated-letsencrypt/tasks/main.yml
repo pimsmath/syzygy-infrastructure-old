@@ -68,7 +68,7 @@
   meta: flush_handlers
 
 - name: Retain a copy of the configuration
-  synchronize:
+  ansible.posix.synchronize:
     src: '{{ acme_home }}'
     dest: '{{ acme_secrets }}'
     mode: 'pull'
