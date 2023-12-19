@@ -11,8 +11,8 @@
   version: 5.1.1
 
 - name: sshd
-  src: git+https://github.com/willshersystems/ansible-sshd.git
-  version: v0.12.0
+  src: https://github.com/willshersystems/ansible-sshd.git
+  version: v0.22.0
 
 - name: sudo
   src:  https://github.com/weareinteractive/ansible-sudo

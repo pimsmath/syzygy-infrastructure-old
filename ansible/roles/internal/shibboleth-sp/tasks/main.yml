@@ -4,8 +4,8 @@
   include_vars: "{{ ansible_os_family }}.yml"
 
 - name: Configure Shibboleth YUM repository
-  copy:
-    src: shibboleth.repo
+  template:
+    src: shibboleth.repo.j2
     dest: /etc/yum.repos.d/shibboleth.repo
 
 - name: Install Shibboleth packages

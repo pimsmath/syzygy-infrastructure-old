@@ -1,7 +1,7 @@
 ---
 - name: Configure Shibboleth YUM repository
-  copy:
-    src: shibboleth.repo
+  template:
+    src: "shibboleth.repo.j2"
     dest: /etc/yum.repos.d/shibboleth.repo
 
 - name: Install Shibboleth packages
@@ -13,8 +13,8 @@
 
 - name: Add Shibboleth configuration files
   template:
-    src: '{{ item.src }}'
-    dest: '{{ item.dest }}'
+    src: 'shibboleth/{{ item.src }}'
+    dest: 'shibboleth/{{ item.dest }}'
     owner: root
     group: root
     mode: 0644
