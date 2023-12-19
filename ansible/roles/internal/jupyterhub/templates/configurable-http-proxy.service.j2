@@ -12,7 +12,7 @@ PrivateTmp=yes
 PrivateDevices=yes
 ProtectKernelTunables=yes
 ProtectKernelModules=yes
-ExecStart=/usr/bin/configurable-http-proxy \
+ExecStart=/usr/lib/node_modules/configurable-http-proxy/bin/configurable-http-proxy \
             --ip {{ jupyterhub_proxy_ip }} \
             --port {{ jupyterhub_proxy_port }} \
             --api-ip {{ jupyterhub_proxy_api_ip }} \
