@@ -152,3 +152,5 @@ jupyterhub_oauth_client_secret: ""
 jupyterhub_oauth_callback_url: ""
 
 #jupyterhub_auth_username_salt: # Output of `openssl rand -hex 12`
+#
+jupyterhub_authenticator_allow_all: False

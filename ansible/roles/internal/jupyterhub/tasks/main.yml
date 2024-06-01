@@ -9,9 +9,8 @@
     name: dockerspawner
 
 - name: Manage Jupyterhub Docker Cull
-  pip:
+  ansible.builtin.pip:
     name: jupyterhub-idle-culler
-    executable: '{{ python3_pip_executable }}'
 
 - name: Get Docker image for JupyterHub containers
   docker_image:
@@ -28,7 +27,8 @@
   when: jupyterhub_authenticator == 'google'
 
 - name: Install LTIAuthenticator
-  pip: name='jupyterhub-ltiauthenticator' executable='{{ python3_pip_executable }}'
+  ansible.builtin.pip:
+    name: jupyterhub-ltiauthenticator
   when: jupyterhub_authenticator == 'ltiauthenticator'
 
 - name: Add a jupyter user to run things as
@@ -49,12 +49,10 @@
 - name: Install pycurl
   pip:
     name: pycurl
-    executable: '{{ python3_pip_executable }}'
 
 - name: Install Jupyterhub
   pip:
     name: jupyterhub
-    executable: '{{ python3_pip_executable }}'
 
 - name: Install configurable-http-proxy
   npm:

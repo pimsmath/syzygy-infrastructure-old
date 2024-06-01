@@ -11,7 +11,7 @@ roles:
   - name: geerlingguy.nodejs
     version: 6.1.1
   - name: willshersystems.sshd
-    version: v0.20.0
+    version: v0.22.0
   - name: weareinteractive.sudo
     version: 1.14.1
 

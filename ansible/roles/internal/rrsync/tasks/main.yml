@@ -70,11 +70,8 @@
 
 # ssh_config management relies on stormssh
 - name: Dependencies
-  pip:
-    executable: '{{ python3_pip_executable }}'
-    name:
-      - 'paramiko'
-    state: present
+  ansible.builtin.pip:
+    name: paramiko
 
 - name: Configure rrsync ssh
   community.general.ssh_config:

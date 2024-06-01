@@ -1,5 +1,4 @@
 ---
 - name: Install the syzygyauthenticator
-  pip:
+  ansible.builtin.pip:
     name: '{{ syzygyauthenticator_repo }}@{{ syzygyauthenticator_branch }}#{{ syzygyauthenticator_version }}'
-    executable: '{{ python3_pip_executable }}'

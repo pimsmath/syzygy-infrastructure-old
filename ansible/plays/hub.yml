@@ -29,12 +29,35 @@
       with_items: "{{ base_packages }}"
       when: base_packages is defined
 
-    - name: Set Python3.9 as the default
+    - name: Install Python Environment
       become: true
+      tags:
+        - python
+      ansible.builtin.yum:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - python3.11
+        - python3.11-pip
+        - python3.11-devel
+
+    - name: Set Python3.11 as the default
+      become: true
+      tags:
+        - python
       community.general.alternatives:
         name: python3
-        path: /usr/bin/python3.9
+        path: /usr/bin/python3.11
         link: /usr/bin/python3
+
+    - name: Set pip3.11 as the default
+      become: true
+      tags:
+        - python
+      community.general.alternatives:
+        name: pip3
+        path: /usr/bin/pip3.11
+        link: /usr/bin/pip3
 
           
     - name: Set SELinux as permissive
@@ -62,18 +85,6 @@
         zone: "{{ item.value.zone }}"
       with_dict: "{{ firewalld_service_rules }}"
       when: firewalld_service_rules is defined
-
-    - name: Install Python Environment
-      become: true
-      tags:
-        - python
-      ansible.builtin.yum:
-        name: "{{ item }}"
-        state: present
-      with_items:
-        - python39
-        - python39-pip
-        - python39-devel
 
 - name: Apply roles
   hosts: hub

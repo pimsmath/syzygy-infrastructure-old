@@ -18,15 +18,28 @@
     state: present
     update_cache: yes
 
-- name: Copy ZFS yum repo
-  template:
-    src: zfs.repo.j2
-    dest: /etc/yum.repos.d/zfs.repo
+- name: Import ZFS GPG key.
+  rpm_key:
+    key: "{{ zfs_repo_gpg_key_url }}"
+    state: present
+  register: result
+  until: result is succeeded
+  retries: 5
+  delay: 10
+  ignore_errors: "{{ ansible_check_mode }}"
 
-- name: Copy ZFS GPG key
-  copy:
-    src: files/RPM-GPG-KEY-zfsonlinux
-    dest: /etc/pki/rpm-gpg/RPM-GPG-KEY-zfsonlinux
+
+
+- name: Install ZFS Repo
+  yum:
+    name: '{{ zfs_repo_url }}'
+    state: present
+  register: result
+  until: result is succeeded
+  retries: 5
+  delay: 10
+
+
 
 - name: Install zfs kernel module
   yum:

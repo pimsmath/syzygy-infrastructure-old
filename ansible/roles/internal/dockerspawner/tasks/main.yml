@@ -1,9 +1,12 @@
 ---
 - name: Install escapism
-  pip: name=escapism executable='{{ python3_pip_executable }}'
+  ansible.builtin.pip:
+    name: escapism
 
 - name: Install docker python library
-  pip: name=docker executable='{{ python3_pip_executable }}'
+  ansible.builtin.pip:
+    name: docker
 
 - name: Install dockerspawner
-  pip: name=dockerspawner executable='{{ python3_pip_executable }}'
+  ansible.builtin.pip:
+    name: dockerspawner
