@@ -49,6 +49,11 @@ RequestHeader unset Shib-Authentication-Instant
   </Directory>
 
   <Location /jupyter>
+    RewriteEngine On
+    RewriteCond %{HTTP:Connection} Upgrade [NC]
+    RewriteCond %{HTTP:Upgrade} websocket [NC]
+    RewriteRule /jupyter/(.*) ws://127.0.0.1:8000/jupyter/$1 [P,L]
+
     ProxyPreserveHost on
     ProxyPass http://127.0.0.1:8000/jupyter
     ProxyPassReverse http://127.0.0.1:8000/jupyter
@@ -67,23 +72,6 @@ RequestHeader unset Shib-Authentication-Instant
     RequestHeader set Shib-Authentication-Instant "%{Shib-Authentication-Instant}e"
   </Location>
 {% endif %}
-
-  <LocationMatch "/jupyter/(user/[^/]*)/(api/kernels/[^/]+/channels|terminals/websocket)(.*)">
-{% if jupyterhub_authenticator == 'shib' %}
-    AuthType shibboleth
-    Require shibboleth
-    ShibRequestSetting requireSession true
-    ShibUseHeaders off
-    RequestHeader set REMOTE_USER %{REMOTE_USER}s
-    RequestHeader set {{ shib_id_attribute }} "%{{ '{' }}{{ shib_id_attribute }}{{ '}' }}e"
-    RequestHeader set {{ shib_auth_attribute }} "%{{ '{' }}{{ shib_auth_attribute }}{{ '}' }}e"
-    RequestHeader set Shib-Authentication-Instant "%{Shib-Authentication-Instant}e"
-{% endif %}
-
-    ProxyPassMatch ws://127.0.0.1:8000/jupyter/$1/$2$3
-    ProxyPassReverse ws://127.0.0.1:8000/jupyter/$1/$2$3
-  </LocationMatch>
-
 
   ErrorLog {{ apache_log_dir | default('/var/log/httpd') }}/jupyter-ssl-error.log
   LogLevel warn
