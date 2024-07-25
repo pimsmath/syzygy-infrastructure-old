@@ -51,8 +51,9 @@
     name: pycurl
 
 - name: Install Jupyterhub
-  pip:
-    name: jupyterhub
+  ansible.builtin.pip:
+    name: jupyterhub 
+    version: '{{ jupyterhub_version }}'
 
 - name: Install configurable-http-proxy
   npm:
