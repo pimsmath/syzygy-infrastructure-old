@@ -76,7 +76,7 @@ c.{{ authenticator_option.conf_object }}  = {{ authenticator_option.value }}
 {% endfor %}
 {% endif %}
 {% endif %}
-c.Authenticator.allow_all =  '{{ jupyterhub_authenticator_allow_all }}'
+c.Authenticator.allow_all =  {{ jupyterhub_authenticator_allow_all }}
 {% endblock %}
 
 {% if jupyterhub_announcement != "" %}
