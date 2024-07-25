@@ -1,4 +1,7 @@
 zfs_pool_name: tank
+
+zfs_create_pool: true
+
 zfs_module_dkms: false
 
 zfs_repo_url: https://zfsonlinux.org/epel/zfs-release-2-3.el{{ ansible_distribution_major_version }}.noarch.rpm

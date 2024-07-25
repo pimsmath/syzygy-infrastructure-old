@@ -56,13 +56,42 @@
 - name: Flush ZFS Handlers
   meta: flush_handlers
 
+  # Check for available pools
+- name: Get list of available zpools
+  ansible.builtin.shell: "zpool list -H -o name"
+  register: available_zpools
+  changed_when: false
+  check_mode: false
+
+- name: Get list of importable zpool
+  ansible.builtin.shell: "set -o pipefail; zpool import | sed -nr 's/^\\s*pool: (.*)/\\1/p'"
+  args:
+    executable: /bin/bash
+  register: importable_zpools
+  changed_when: false
+  check_mode: false
+
+
+- name: Import '{{ zfs_pool_name }}' zpool
+  ansible.builtin.command: zpool import {{ zfs_pool_name }}
+  register: zpool_import_result
+  changed_when: true
+  failed_when: (zpool_import_result.rc != 0) or (zpool_import_result.stderr | length > 0)
+  when:
+    - zfs_pool_name not in available_zpools.stdout_lines
+    - zfs_pool_name in importable_zpools.stdout_lines
+
 - name: Create tank zpool
   notify:
    - Start zfs
-  command: /sbin/zpool create -f '{{ zfs_pool_name }}' {{ zfs_vdev_config }}
+  command: /sbin/zpool create '{{ zfs_pool_name }}' '{{ zfs_vdev_config }}'
   args:
     creates: /tank
-  when: zfs_vdev_config is defined
+  when:
+    - zfs_create_pool
+    - zfs_vdev_config is defined
+    - zfs_pool_name not in available_zpools.stdout_lines
+    - zfs_pool_name not in importable_zpools.stdout_lines
 
 - name: Create ZFS home container
   command: /sbin/zfs create '{{ zfs_pool_name }}'/home
