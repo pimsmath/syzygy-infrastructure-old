@@ -33,7 +33,8 @@
         security of your site. Stealing sessions via cookie theft is much easier with this disabled.
         -->
         <Sessions lifetime="28800" timeout="0" relayState="ss:mem"
-                  checkAddress="false" handlerSSL="true" cookieProps="https">
+                  checkAddress="false" handlerSSL="true" cookieProps="{{ shib_session_cookie_proto | default('https') }}">
+
 
             <!--
             Configures SSO for a default IdP. To allow for >1 IdP, remove
@@ -75,9 +76,9 @@
            {% if shib_idp_metadata_uri is defined %}
             uri="{{ shib_idp_metadata_uri }}"
            {% else %}
-            uri="file:///etc/shibboleth/{{ inventory_hostname }}_idp-metadata.xml"
+            uri="file:///etc/shibboleth/{{ ansible_hostname }}_idp-metadata.xml"
            {% endif %}
-            backingFilePath="/etc/shibboleth/{{ inventory_hostname }}_idp-metadata.xml"
+            backingFilePath="/etc/shibboleth/{{ ansible_hostname }}_idp-metadata.xml"
             reloadInterval="7200"> 
         </MetadataProvider>
 
