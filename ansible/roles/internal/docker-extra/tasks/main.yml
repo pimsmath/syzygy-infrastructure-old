@@ -45,3 +45,8 @@
 - name: Restart docker
   service: name=docker state=restarted
   when: restartdocker_ephemeral.changed
+
+- name: update facts if docker0 is not defined
+  action: setup filter="ansible_docker0"
+  when: ansible_docker0 is not defined
+
