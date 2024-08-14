@@ -1,3 +1,4 @@
 ---
 zfs_auto_version: 'upstream/1.2.4'
 zfs_auto_snap_dir: "/opt/zfs-auto-snapshot"
+zfs_auto_enabled: true

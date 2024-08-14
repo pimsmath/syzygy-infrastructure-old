@@ -19,6 +19,16 @@
     chdir: "{{ zfs_auto_snap_dir }}"
     creates: "/usr/sbin/zfs-auto-snapshot"
 
+- name: Remove cron jobs
+  file: path="{{ item.path }}" state=absent
+  with_items:
+    - { path: "/etc/cron.hourly/zfs-auto-snapshot" }
+    - { path: "/etc/cron.daily/zfs-auto-snapshot" }
+    - { path: "/etc/cron.weekly/zfs-auto-snapshot" }
+    - { path: "/etc/cron.monthly/zfs-auto-snapshot" }
+    - { path: "/etc/cron.d/zfs-auto-snapshot" }
+  when: not zfs_auto_enabled
+
 - name: Update snapshot retention
   replace: 
     dest: "{{ item.dest }}"
@@ -26,13 +36,4 @@
     replace: "--keep=7"
   with_items:
     - { dest: "/etc/cron.daily/zfs-auto-snapshot" }
--
-
-
-- name: Remove hourly, weekly and monthly snapshots
-  file: path="{{ item.path }}" state=absent
-  with_items:
-    - { path: "/etc/cron.hourly/zfs-auto-snapshot" }
-    - { path: "/etc/cron.weekly/zfs-auto-snapshot" }
-    - { path: "/etc/cron.monthly/zfs-auto-snapshot" }
-    - { path: "/etc/cron.d/zfs-auto-snapshot" }
+  when: zfs_auto_enabled
