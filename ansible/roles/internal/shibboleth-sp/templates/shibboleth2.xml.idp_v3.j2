@@ -21,7 +21,10 @@
 
     <!-- The ApplicationDefaults element is where most of Shibboleth's SAML bits are defined. -->
     <ApplicationDefaults entityID="https://{{ inventory_hostname }}/jupyter/shibboleth-sp"
-        REMOTE_USER="{{ shib_id_attribute }}">
+        REMOTE_USER="{{ shib_id_attribute }}"
+        {% if shib_id_signing %}signing="true"{% endif %}
+        {% if shib_id_encryption %}encryption="true"{% endif %}
+        >
 
         <!--
         Controls session lifetimes, address checks, cookie handling, and the protocol handlers.
@@ -72,7 +75,7 @@
             styleSheet="/shibboleth-sp/main.css"/>
         
         <!-- Example of remotely supplied batch of signed metadata. -->
-        <MetadataProvider type="XML" validate="true"
+        <MetadataProvider type="XML" {% if shib_metadata_validate %}validate="true"{% endif %}
            {% if shib_idp_metadata_uri is defined %}
             uri="{{ shib_idp_metadata_uri }}"
            {% else %}

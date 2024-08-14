@@ -8,6 +8,9 @@ shib_support_contact: "Syzygy/jupyter@pims.math.ca"
 shib_hostname: "{{ inventory_hostname }}"
 shib_metadata_file: '/etc/shibboleth/sp-metadata.xml'
 shib_entity_id: 'https://{{ inventory_hostname }}/{{ shib_service }}/shibboleth-sp'
+shib_id_signing: false
+shib_id_encryption: false
+shib_metadata_validate: true
 
 # These are the authorization parameters we will be using
 shib_id_attribute: 'eduPersonPrincipalName'

@@ -33,7 +33,8 @@
     <ApplicationDefaults id="default" policyId="default"
         entityID="https://{{ inventory_hostname }}/jupyter/shibboleth-sp"
         homeURL="https://{{ inventory_hostname }}/"
-        signing="true" encryption="false"
+        {% if shib_id_signing %}signing="true" {% endif %}
+        {% if shib_id_encryption %}encryption="true" {% endif %}
         >
 
         <Sessions lifetime="7200" timeout="3600" checkAddress="false" consistentAddress="true"
@@ -107,7 +108,7 @@
             logoLocation="/shibboleth-sp/logo.jpg"
             styleSheet="/shibboleth-sp/main.css"/>
 
-        <MetadataProvider type="XML" 
+        <MetadataProvider type="XML" {% if shib_metadata_validate %}validate="true"{% endif %}
             url="{{ shib_idp_metadata_uri }}"
             backingFilePath="/etc/shibboleth/{{ ansible_hostname }}_idp-metadata.xml"
             reloadInterval="86400" />
