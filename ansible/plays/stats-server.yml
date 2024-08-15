@@ -1,6 +1,6 @@
 ---
 - name: Install and configure Stats Server
-  hosts: stats
+  hosts: stats-server
   become: true
   pre_tasks:
     - debug:
@@ -102,7 +102,7 @@
  
 
 - name: Apply roles
-  hosts: stats
+  hosts: stats-server
   roles:
     - { role: geerlingguy.repo-epel, become: yes }
     - { role: weareinteractive.sudo, become: yes }
