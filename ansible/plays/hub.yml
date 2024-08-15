@@ -176,3 +176,14 @@
         - ssh
         - rrsync
         - backup
+
+    - role: prometheus.prometheus.node_exporter
+      become: yes
+      tags:
+        - prometheus
+  
+    - role: prometheus-target
+      become: yes
+      tags:
+        - prometheus
+
