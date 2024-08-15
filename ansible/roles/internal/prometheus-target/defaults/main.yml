@@ -1,0 +1,4 @@
+---
+metrics_host: '{{ inventory_hostname }}'
+prometheus_apache_conf_dir: '{{ apache_conf_dir | default("/etc/httpd/conf.d") }}'
+prometheus_apache_service: '{{ apache_service | default("httpd") }}'

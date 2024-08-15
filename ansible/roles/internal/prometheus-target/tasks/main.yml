@@ -1,0 +1,23 @@
+---
+- name: Create file_sd_config fragment for jupyterhub
+  template:
+    src: node_file_sd_config.yml.j2
+    dest: '{{ playbook_dir }}/../host_vars/files/stats_sd_conf/{{ inventory_hostname }}-node_file_sd_config.yml'
+  become: false
+  delegate_to: localhost
+
+- name: Create file_sd_config fragment for node_exporter
+  template:
+    src: jupyterhub_file_sd_config.yml.j2
+    dest: '{{ playbook_dir }}/../host_vars/files/stats_sd_conf/{{ inventory_hostname }}-jupyterhub_file_sd_config.yml'
+  become: false
+  delegate_to: localhost
+
+- name: Add apache vhost configuration for prometheus metrics
+  template:
+    src: metrics.conf.j2
+    dest: "{{ apache_conf_path | default('/etc/httpd/conf.d') }}/metrics.conf"
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart apache

@@ -1,0 +1,13 @@
+<Location /metrics/jupyter>
+  Require ip {{ lookup('dig', metrics_host) }}
+  ProxyPass http://127.0.0.1:8000/jupyter/hub
+  ProxyPassReverse http://127.0.0.1:8000/jupyter/hub
+  ProxyPreserveHost on
+</Location>
+
+<Location /metrics/node>
+  Require ip {{ lookup('dig', metrics_host) }}
+  ProxyPass http://127.0.0.1:9100
+  ProxyPassReverse http://127.0.0.1:9100
+  ProxyPreserveHost on
+</Location>

@@ -1,0 +1,38 @@
+jhub_stats_api_token: c5419e23675c95183d230d2ffde43ca31d273c9b83e33fa6f3989281b60ee467
+
+jupyterhub_roles: |
+  [
+    {
+      'name': 'stats'
+      'scopes': ['read:metrics']
+      'services': ['stats']
+    },
+    {
+      'name': 'idle-culler',
+      'scopes': [
+        'read:users:activity',
+        'servers',
+        'admin:users'
+      ]
+    }
+  ]
+
+jupyterhub_services: |
+  [ 
+    {
+      'name': 'stats',
+      'admin': False,
+      'api_token': '{{ jhub_stats_api_token }}'
+    },
+    {
+      'name': 'cull-idle',
+      'admin': True,
+      'command': [
+          sys.executable, 
+          '-m', 
+          'jupyterhub_idle_culler', 
+          '--timeout={{ jhub_docker_cull_cull_s }}'
+      ]
+    }
+  ]
+

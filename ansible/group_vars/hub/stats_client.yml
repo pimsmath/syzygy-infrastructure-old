@@ -1,0 +1,4 @@
+apache_create_vhosts: false
+metrics_host: dashboard.syzygy.ca
+node_exporter_basic_auth_users:
+  stats: 35a8d283e0680d493d292b87605b1ae488f3a86364aa03aea518115dde1b4171

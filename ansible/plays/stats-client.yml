@@ -3,19 +3,13 @@
 - name: Install and configure prometheus endpoints
   hosts: hub
   become: true
-  tasks:
-    - name: Prometheus node-exporter
-      include_role:
-        name: prometheus-node-exporter
-
-    - name: cAdvisor container
-      include_role:
-        name: prometheus-cadvisor
-
-    - name: Jupyterhub endpoints
-      include_role:
-        name: prometheus-jupyterhub
-
-    - name: Apache endpoints config
-      include_role:
-        name: prometheus-apache
+  roles:
+    - role: prometheus.prometheus.node_exporter
+      become: yes
+      tags:
+        - prometheus
+  
+    - role: prometheus-target
+      become: yes
+      tags:
+        - prometheus

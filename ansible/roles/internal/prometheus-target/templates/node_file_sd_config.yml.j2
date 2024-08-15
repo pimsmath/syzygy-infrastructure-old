@@ -1,0 +1,15 @@
+scrape_configs:
+  - job_name: '{{ inventory_hostname }}_node'
+    static_configs:
+    - targets: ['{{ inventory_hostname }}']
+      labels:
+        type: 'node'
+        host: '{{ inventory_hostname }}'
+    basic_auth:
+{% for username,password in node_exporter_basic_auth_users.items() %}
+      username: {{ username }}
+      password: {{ password }}
+{% endfor %}
+    metrics_path: '/metrics/node/metrics'
+    scheme: 'https'
+

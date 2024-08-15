@@ -25,3 +25,8 @@ collections:
   - name: devsec.hardening
     version: 9.0.1
     source: https://galaxy.ansible.com
+  - name: prometheus.prometheus
+    version: 0.17.0
+    source: https://galaxy.ansible.com
+  - name: grafana.grafana
+    version: 5.4.0

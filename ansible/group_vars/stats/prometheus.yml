@@ -1,28 +1,8 @@
-prometheus_exporters_common_root_dir: /prometheus/exporters
-prometheus_exporters_common_dist_dir: "{{ prometheus_exporters_common_root_dir }}/dist"
-prometheus_exporters_common_log_dir: "{{ prometheus_exporters_common_root_dir }}/var/log/prometheus"
-prometheus_exporters_common_conf_dir: "{{ prometheus_exporters_common_root_dir }}/etc/prometheus/exporters"
+prometheus_storage_retention: "180d"
+prometheus_web_external_url: 'https://{{ inventory_hostname }}/prometheus'
+prometheus_web_listen_address: '127.0.0.1:9090'
 
+node_exporter_web_listen_address: '127.0.0.1:9100'
 
-prometheus_node_exporter_version: 0.18.1
-prometheus_node_exporter_enabled_collectors:
-  - conntrack
-  - cpu
-  - diskstats
-  - entropy
-  - filefd
-  - filesystem
-  - loadavg
-  - mdadm
-  - meminfo
-  - netdev
-  - netstat
-  - stat
-  - textfile
-  - time
-  - vmstat
-  - zfs
-
-prometheus_node_exporter_config_flags:
-   'web.listen-address': '127.0.0.1:9100'
-   'log.level': 'info'
+prometheus_scrape_config_files:
+  - '{{ playbook_dir }}/../host_vars/files/stats_sd_conf/*.yml'

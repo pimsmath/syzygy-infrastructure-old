@@ -1,0 +1,10 @@
+---
+- name: Create prometheus storage
+  command: /sbin/zfs create '{{ zfs_pool_name }}'/prometheus
+  args:
+    creates: '/{{ zfs_pool_name }}/prometheus'
+  when: zfs_vdev_config is defined
+
+- name: Set prometheus data location
+  ansible.builtin.set_fact:
+    prometheus_db_dir: '/{{ zfs_pool_name }}/prometheus'
