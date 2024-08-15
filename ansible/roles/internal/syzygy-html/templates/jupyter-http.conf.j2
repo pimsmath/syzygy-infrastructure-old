@@ -48,12 +48,12 @@ RequestHeader unset Shib-Authentication-Instant
     Require all granted
   </Directory>
 
+  RewriteEngine On
+  RewriteCond %{HTTP:Connection} Upgrade [NC]
+  RewriteCond %{HTTP:Upgrade} websocket [NC]
+  RewriteRule /(.*) ws://127.0.0.1:8000/$1 [P,L]
+ 
   <Location /jupyter>
-    RewriteEngine On
-    RewriteCond %{HTTP:Connection} Upgrade [NC]
-    RewriteCond %{HTTP:Upgrade} websocket [NC]
-    RewriteRule /jupyter/(.*) ws://127.0.0.1:8000/jupyter/$1 [P,L]
-
     ProxyPreserveHost on
     ProxyPass http://127.0.0.1:8000/jupyter
     ProxyPassReverse http://127.0.0.1:8000/jupyter
