@@ -12,6 +12,8 @@
     dest: '{{ playbook_dir }}/../host_vars/files/stats_sd_conf/{{ inventory_hostname }}-jupyterhub_file_sd_config.yml'
   become: false
   delegate_to: localhost
+  notify:
+    - Restart JupyterHub
 
 - name: Add apache vhost configuration for prometheus metrics
   template:

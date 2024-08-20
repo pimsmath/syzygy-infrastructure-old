@@ -3,9 +3,12 @@ scrape_configs:
     static_configs:
     - targets: ['{{ inventory_hostname }}']
       labels:
-        type: 'jupyter'
+        type: 'jupyterhub'
+        group: 'syzygy'
         host: '{{ inventory_hostname }}'
     bearer_token: '{{ jhub_stats_api_token }}'
+    scrape_interval: 1m
+    scrape_timeout: 30s
     metrics_path: '/metrics/jupyter/metrics'
     scheme: 'https'
 

@@ -4,12 +4,15 @@ scrape_configs:
     - targets: ['{{ inventory_hostname }}']
       labels:
         type: 'node'
+        group: 'syzygy'
         host: '{{ inventory_hostname }}'
     basic_auth:
 {% for username,password in node_exporter_basic_auth_users.items() %}
       username: {{ username }}
       password: {{ password }}
 {% endfor %}
+    scrape_interval: 1m
+    scrape_timeout: 30s
     metrics_path: '/metrics/node/metrics'
     scheme: 'https'
 
