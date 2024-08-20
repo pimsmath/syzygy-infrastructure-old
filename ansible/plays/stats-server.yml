@@ -155,3 +155,7 @@
     - role: prometheus-post
       become: yes
       tags: prometheus
+
+    - role: grafana.grafana.grafana
+      become: yes
+      tags: prometheus
