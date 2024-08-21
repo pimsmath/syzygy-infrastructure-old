@@ -1,0 +1,124 @@
+---
+# A playbook for managing recover.syzygy.ca
+# 
+# - backup host
+# - data recovery and management
+#
+- name: Install and configure management server
+  hosts: manage
+  become: true
+
+  tasks:
+    - name: Ensure hostname is set
+      become: true
+      tags: ["hostname"]
+      ansible.builtin.hostname:
+        name: '{{ inventory_hostname }}'
+
+    # Add relevant keys to `ssh_public_keys`
+    # in either host_vars, group_vars, or local_vars.
+    - name: Manage SSH public keys
+      tags: ["ssh"]
+      ansible.posix.authorized_key:
+        user: '{{ item.value.user }}'
+        state: '{{ item.value.state }}'
+        key: '{{ item.value.public_key }}'
+      with_dict: '{{ ssh_public_key }}'
+      when: ssh_public_keys is defined
+
+    - name: Install Base Packages
+      become: true
+      tags: ["base-packages"]
+      ansible.builtin.yum:
+        name: '{{ item }}'
+        state: present
+      with_items: '{{ base_packages }}'
+      when: base_packages is defined
+
+    - name: Configure SELinux
+      become: true
+      tags: ["selinux"]
+      ansible.posix.selinux:
+        policy: targeted
+        state: permissive
+
+    - name: Ensure firewalld service is running
+      become: true
+      tags:
+        - firewalld
+      ansible.builtin.yum:
+        name: firewalld
+        state: present
+
+    - name: Poke firewall holes
+      become: true
+      tags:
+        - firewalld
+      ansible.posix.firewalld:
+        service: '{{ item.value.service }}'
+        permanent: "{{ item.value.permanent | default('yes') }}"
+        state: '{{ item.value.state }}'
+        zone: '{{ item.value.zone }}'
+      with_dict: '{{ firewalld_service_rules }}'
+      when: firewalld_service_rules is defined
+
+    - name: Install Python Environment
+      become: true
+      tags:
+        - python
+      ansible.builtin.yum:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - python3.11
+        - python3.11-pip
+        - python3.11-devel
+
+    - name: Set Python3.11 as the default
+      become: true
+      tags:
+        - python
+      community.general.alternatives:
+        name: python3
+        path: /usr/bin/python3.11
+        link: /usr/bin/python3
+
+
+    - name: Set pip3.11 as the default
+      become: true
+      tags:
+        - python
+      community.general.alternatives:
+        name: pip3
+        path: /usr/bin/pip3.11
+        link: /usr/bin/pip3
+
+    - name: Update Needs-Restarting python
+      become: true
+      tags:
+        - python
+      lineinfile:
+        dest: /usr/bin/needs-restarting
+        regexp: '^#!/usr/bin/python3$'
+        line: '#!/usr/bin/python3.9'
+
+    - name: Add the user 'jupyter'
+      ansible.builtin.user:
+        name: jupyter
+        comment: Syzygy Jupyter User
+        uid: 9999
+
+- name: Apply roles
+  hosts: manage
+  roles:
+    - { role: geerlingguy.repo-epel, become: yes }
+    - { role: weareinteractive.sudo, become: yes }
+    - { role: devsec.hardening.ssh_hardening, become: yes }
+
+    - role: sysstat
+      become: yes
+
+    - role: zfs
+      become: true
+      tags:
+        - zfs
