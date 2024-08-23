@@ -55,8 +55,9 @@ function set_new_container_quota {
   quota="${3:-${2}}"
   newquota="${4:-$((${3} / 2))}"
 
-  quota_file="/sys/fs/cgroup/cpu/docker/${cgroup}/cpu.cfs_quota_us"
-  local cmd="echo ${newquota} > /sys/fs/cgroup/cpu/docker/$cgroup/cpu.cfs_quota_us"
+  quota_file="/sys/fs/cgroup/system.slice/${cgroup}/cpu.max"
+  read -r -a quota period < /sys/fs/cgroup/system.slice/${cgroup}/cpu.max
+  local cmd="echo ${newquota} ${period} > $quota_file"
   echo "${cmd}"
   echo
   if [ -w "${quota_file}" ] ; then
@@ -91,9 +92,10 @@ main() {
   if [ -z "${cgroup}" ] ; then
     err "Unable to idenfity parent container"
   else
-    container_info=$(docker ps -f id="${cgroup}" --format "{{.ID}}: {{.Names}}")
-    quota=$(</sys/fs/cgroup/cpu/docker/${cgroup}/cpu.cfs_quota_us)
-    period=$(</sys/fs/cgroup/cpu/docker/${cgroup}/cpu.cfs_period_us)
+    echo "Cgroup is $cgroup"
+    container_id=$(echo ${cgroup} | sed 's/^docker-//' | sed 's/\.scope$//')
+    container_info=$(docker ps -f id="${container_id}" --format "{{.ID}}: {{.Names}}")
+    read -r quota period < /sys/fs/cgroup/system.slice/${cgroup}/cpu.max
     echo
     echo "[${container_info}] Current share: $quota/$period"
     echo
