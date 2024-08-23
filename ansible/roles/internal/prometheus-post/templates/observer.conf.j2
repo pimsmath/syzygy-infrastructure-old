@@ -1,5 +1,6 @@
 <VirtualHost *:80>
   ServerName {{ inventory_hostname }}
+  ServerAlias stats.syzygy.ca
   ErrorLog {{ apache_log_dir | default("/var/log/httpd") }}/jupyter-error.log
   LogLevel warn
   CustomLog {{ apache_log_dir | default("/var/log/httpd") }}/jupyter-access.log combined
@@ -11,6 +12,7 @@
 
 <VirtualHost *:443>
   ServerName {{ inventory_hostname }}
+  ServerAlias stats.syzygy.ca
   ServerAdmin {{ admin_email }}
 
   SSLEngine on
