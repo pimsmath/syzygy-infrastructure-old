@@ -6,14 +6,6 @@
     groups: '{{ docker_group }}'
     append: yes
 
-- name: Add container-renice script
-  copy:
-    src: container-renice.sh
-    dest: /usr/local/bin/container-renice
-    owner: root
-    group: root
-    mode: '0755'
-
 - name: Check the current filesystem
   command: "lsblk -no fstype {{ openstack_ephemeral_docker_disk }}"
   when: openstack_ephemeral_docker_disk != ""

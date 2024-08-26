@@ -5,8 +5,10 @@ TF_PATH := $(TOP)/../terraform
 
 GROUP ?= prod
 
-PLAYBOOK_CMD = TF_STATE=$(TF_PATH)/infrastructure/$(GROUP)/$(ENV) ansible-playbook --vault-password-file=../keys/ansible-vault -i ./inventory
+PLAYBOOK_CMD = TF_STATE=$(TF_PATH)/infrastructure/$(GROUP)/$(ENV) ansible-playbook --vault-password-file=../keys/ansible-vault -i ./inventory -vv
 ANSIBLE_CMD = TF_STATE=$(TF_PATH)/infrastructure/$(GROUP)/$(ENV) ansible  --vault-password-file=../keys/ansible-vault -i ./inventory
+GLOBAL_PLAYBOOK_CMD = ansible-playbook --vault-password-file=../keys/ansible-vault -i ./global-inventory
+ANSIBLE_CMD = ansible  --vault-password-file=../keys/ansible-vault -i ./global-inventory
 
 help: tasks
 
@@ -26,6 +28,10 @@ endif
 check-env:
 ifndef ENV
 	$(error ENV is not defined)
+else
+ifeq ($(ENV),all)
+export PLAYBOOK_CMD = $(GLOBAL_PLAYBOOK_CMD)
+endif
 endif
 
 check-limit:
