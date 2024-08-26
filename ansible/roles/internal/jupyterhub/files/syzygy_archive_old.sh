@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+#set -x
 HOME="tank/home"
 ARCHIVE="tank/oldhome"
 
@@ -85,7 +85,7 @@ newest_file() {
 
     local directory=$(/usr/sbin/zfs get -Hp -o value mountpoint ${fs})
     m=( $(find "${directory}" -print0 | \
-     xargs -0 stat --format '%Y "%n"' | \
+     xargs -0 stat --format '%Y "%n' | \
      sort -n  | tail -n 1)
     )
 }
