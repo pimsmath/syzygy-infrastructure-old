@@ -85,7 +85,7 @@ newest_file() {
 
     local directory=$(/usr/sbin/zfs get -Hp -o value mountpoint ${fs})
     m=( $(find "${directory}" -print0 | \
-     xargs -0 stat --format '%Y "%n' | \
+     xargs -0 stat --format '%Y "%n"' | \
      sort -n  | tail -n 1)
     )
 }
@@ -104,7 +104,7 @@ main() {
     declare -a modified
     newest_file "${fs}" modified
 
-    owner=$(echo ${modified[1]} | cut -d'/' -f4)
+    owner=$(echo ${modified[1]} | cut -d'/' -f4 | sed 's/"//g')
     
     if [ "${modified[0]}" -lt "${olderthan}" ] ; then
       cmd="/usr/sbin/zfs rename ${fs} ${ARCHIVE}/${owner}"
