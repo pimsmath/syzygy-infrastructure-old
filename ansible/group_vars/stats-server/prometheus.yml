@@ -6,3 +6,13 @@ node_exporter_web_listen_address: '127.0.0.1:9100'
 
 prometheus_scrape_config_files:
   - '{{ playbook_dir }}/../host_vars/files/stats_sd_conf/*.yml'
+
+prometheus_allowed_ip:
+  - 142.103.59.64/26
+  - 142.103.115.0/27
+  - 24.84.212.12
+  - 128.189.96.0/19
+  - 127.0.0.1/32
+
+prometheus_allowed_host:
+  - '{{ inventory_hostname }}'

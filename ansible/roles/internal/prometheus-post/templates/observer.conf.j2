@@ -30,17 +30,24 @@
   RedirectMatch 301 ^(?!(/\.well-known/acme-challenge/|/public|/grafana|/prometheus)).* https://{{ inventory_hostname }}/grafana/
 
   <Location /grafana/>
+     {% for ip in prometheus_allowed_ip %}
+     Require ip {{ ip }}
+     {% endfor %}
+     {% for host in prometheus_allowed_host %}
+     Require host {{ host }}
+     {% endfor %}
      ProxyPass http://127.0.0.1:3000/
      ProxyPassReverse http://127.0.0.1:3000/
      ProxyPreserveHost on
   </Location>
 
   <Location /prometheus/>
-     Require ip 142.103.59.77
-     Require ip 24.84.212.12
-     Require ip 128.189.96.0/19
-     Require ip 127.0.0.1
-     Require host {{ inventory_hostname }}
+     {% for ip in prometheus_allowed_ip %}
+     Require ip {{ ip }}
+     {% endfor %}
+     {% for host in prometheus_allowed_host %}
+     Require host {{ host }}
+     {% endfor %}
      ProxyPass http://127.0.0.1:9090/prometheus/
      ProxyPassReverse http://127.0.0.1:9090/prometheus/
      ProxyPreserveHost on
