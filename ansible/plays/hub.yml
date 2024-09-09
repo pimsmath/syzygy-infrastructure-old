@@ -3,6 +3,9 @@
 - name: Setup generic environment
   hosts: hub
   tasks:
+    # N.B. On hosts where systemd-hostnamectl is disabled
+    # This task will fail. Comment it out or find a way to make
+    # systemd-hostnamectl less garbage.
     - name: Ensure hostname is set
       become: true
       tags: ["hostname"]
@@ -42,12 +45,17 @@
           domain: '*'
           limit_type: soft
           limit_item: nproc
-          value: 8192
+          value: 131072
         - dest: /etc/security/limits.d/20-nproc.conf
           domain: 'root'
           limit_type: soft
           limit_item: nproc
           value: 'unlimited'
+        - dest: /etc/security/limits.d/20-nfiles.conf
+          domain: '*'
+          limit_type: soft
+          limit_item: nofile
+          value: 32768
 
     - name: Install Python Environment
       become: true
@@ -187,3 +195,30 @@
       tags:
         - prometheus
 
+# I didn't see a neat way of integrating this with geerlingguy.apache. It would
+# be nice to use their role and reload apache that way, but for now...
+- name: Wrap up tasks
+  hosts: hub
+  tasks:
+    - name: Tweak apache mpm configuration
+      become: true
+      register: mpm
+      ansible.builtin.blockinfile:
+        path: /etc/httpd/conf.modules.d/00-mpm.conf
+        block: |
+          <IfModule mpm_worker_module>
+            ServerLimit {{ httpd_serverlimit | default(256) }}
+            StartServers {{ httpd_startservers | default(5) }}
+            MinSpareThreads {{ httpd_minsparethreads | default(64) }}
+            MaxSpareThreads {{ httpd_maxsparethreads | default(256) }}
+            ThreadLimit {{ httpd_threadlimit | default(32) }}
+            ThreadsPerChild {{ httpd_threadsperchild | default(32) }}
+            MaxRequestWorkers {{ httpd_maxrequestworkers | default(8192) }}
+          </IfModule>
+
+    - name: Gracefully restart apache
+      become: true
+      service:
+        name: httpd
+        state: reloaded
+      when: mpm.changed
