@@ -206,15 +206,14 @@
       ansible.builtin.blockinfile:
         path: /etc/httpd/conf.modules.d/00-mpm.conf
         block: |
-          <IfModule mpm_worker_module>
-            ServerLimit {{ httpd_serverlimit | default(256) }}
-            StartServers {{ httpd_startservers | default(5) }}
-            MinSpareThreads {{ httpd_minsparethreads | default(64) }}
-            MaxSpareThreads {{ httpd_maxsparethreads | default(256) }}
-            ThreadLimit {{ httpd_threadlimit | default(32) }}
-            ThreadsPerChild {{ httpd_threadsperchild | default(32) }}
-            MaxRequestWorkers {{ httpd_maxrequestworkers | default(8192) }}
-          </IfModule>
+          MaxRequestWorkers {{ httpd_maxrequestworkers | default(1024) }}
+          ThreadsPerChild {{ httpd_threadsperchild | default(32) }}
+          ThreadLimit {{ httpd_threadlimit | default(32) }}
+          ServerLimit {{ httpd_serverlimit | default(64) }}
+          StartServers {{ httpd_startservers | default(4) }}
+          MinSpareThreads {{ httpd_minsparethreads | default(64) }}
+          MaxSpareThreads {{ httpd_maxsparethreads | default(512) }}
+          MaxConnectionsPerChild {{ http_maxconnectionsperchild | default(0) }}
 
     - name: Gracefully restart apache
       become: true
