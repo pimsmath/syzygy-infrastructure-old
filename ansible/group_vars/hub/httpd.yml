@@ -1,1 +1,2 @@
 apache_create_vhosts: false
+#apache_restart_state: reloaded

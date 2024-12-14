@@ -6,11 +6,11 @@
     # N.B. On hosts where systemd-hostnamectl is disabled
     # This task will fail. Comment it out or find a way to make
     # systemd-hostnamectl less garbage.
-    - name: Ensure hostname is set
-      become: true
-      tags: ["hostname"]
-      ansible.builtin.hostname:
-        name: "{{ inventory_hostname }}"
+    # - name: Ensure hostname is set
+    #   become: true
+    #   tags: ["hostname"]
+    #   ansible.builtin.hostname:
+    #     name: "{{ inventory_hostname }}"
 
     # Add relevant keys to `ssh_public_keys`
     # in either host_vars, group_vars, or local_vars.
@@ -144,6 +144,12 @@
         - httpd
         - ssl
 
+    - role: apache-post
+      become: yes
+      tags:
+        - httpd
+
+
     - role: zfs
       become: true
       tags:
@@ -194,30 +200,3 @@
       become: yes
       tags:
         - prometheus
-
-# I didn't see a neat way of integrating this with geerlingguy.apache. It would
-# be nice to use their role and reload apache that way, but for now...
-- name: Wrap up tasks
-  hosts: hub
-  tasks:
-    - name: Tweak apache mpm configuration
-      become: true
-      register: mpm
-      ansible.builtin.blockinfile:
-        path: /etc/httpd/conf.modules.d/00-mpm.conf
-        block: |
-          MaxRequestWorkers {{ httpd_maxrequestworkers | default(1024) }}
-          ThreadsPerChild {{ httpd_threadsperchild | default(32) }}
-          ThreadLimit {{ httpd_threadlimit | default(32) }}
-          ServerLimit {{ httpd_serverlimit | default(64) }}
-          StartServers {{ httpd_startservers | default(4) }}
-          MinSpareThreads {{ httpd_minsparethreads | default(64) }}
-          MaxSpareThreads {{ httpd_maxsparethreads | default(512) }}
-          MaxConnectionsPerChild {{ http_maxconnectionsperchild | default(0) }}
-
-    - name: Gracefully restart apache
-      become: true
-      service:
-        name: httpd
-        state: reloaded
-      when: mpm.changed

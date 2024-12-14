@@ -1,0 +1,37 @@
+---
+- name: Configure apache mpm tuning and stats
+  ansible.builtin.blockinfile:
+    path: /etc/httpd/conf.modules.d/00-mpm.conf
+    block: |
+      MaxRequestWorkers {{ apache_post_mpm_maxrequestworkers }}
+      ThreadsPerChild {{ apache_post_mpm_threadsperchild }}
+      ThreadLimit {{ apache_post_mpm_threadlimit }}
+      ServerLimit {{ apache_post_mpm_serverlimit }}
+      StartServers {{ apache_post_mpm_startservers }}
+      MinSpareThreads {{ apache_post_mpm_minsparethreads }}
+      MaxSpareThreads {{ apache_post_mpm_maxsparethreads }}
+      MaxConnectionsPerChild {{ apache_post_mpm_maxconnectionsperchild }}
+  # N.B. If you change ServerLimit this _must_ be a full restart or it 
+  # wont be applied
+  notify: restart apache
+
+- name: Add passlib as a dependency for htpasswd
+  ansible.builtin.yum:
+    name: python3-passlib
+    state: present
+
+- name: Add basic-auth htpasswd for status
+  community.general.htpasswd:
+    path: '{{ apache_post_status_htpasswd }}'
+    name: '{{ apache_post_status_user }}'
+    password: '{{ apache_post_status_password }}'
+    owner: root
+    
+- name: Add server-status config
+  template:
+    src: status.conf.j2
+    dest: /etc/httpd/conf.d/status.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart apache

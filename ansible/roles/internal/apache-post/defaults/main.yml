@@ -1,0 +1,18 @@
+---
+apache_post_mpm_maxrequestworkers: 1024
+apache_post_mpm_threadsperchild: 32
+apache_post_mpm_threadlimit: 32
+apache_post_mpm_serverlimit: 64
+apache_post_mpm_startservers: 4
+apache_post_mpm_minsparethreads: 64
+apache_post_mpm_maxsparethreads: 512
+apache_post_mpm_maxconnectionsperchild: 0
+
+apache_post_status_htpasswd: /etc/httpd/conf.d/.htpasswd
+apache_post_status_user: admin
+
+# passwd deliberately unset, must be provided as an encrypted var
+# apache_post_status_password:
+
+apache_post_status_allowips:
+  - 192.168.0.0/24

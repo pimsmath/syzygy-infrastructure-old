@@ -56,7 +56,7 @@
     owner: root
     group: root
     mode: 0644
-  notify: restart apache
+  notify: reload apache
 
 - name: Update DocumentRoot
   notify:

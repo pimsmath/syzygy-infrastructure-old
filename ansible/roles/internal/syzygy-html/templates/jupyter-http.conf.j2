@@ -36,6 +36,7 @@ RequestHeader unset Shib-Authentication-Instant
 
   Header always set Strict-Transport-Security "max-age=15768000"
 
+  Protocols h2 http/1.1
 {% if jupyterhub_authenticator == 'shib' %}
   ProxyPass /Shibboleth.sso !
 

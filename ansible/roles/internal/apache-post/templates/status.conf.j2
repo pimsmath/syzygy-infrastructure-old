@@ -1,0 +1,21 @@
+# {{ ansible_managed }}
+{% block apache_post_status %}
+<Location /server-status>
+  SetHandler server-status
+  <RequireAll>
+    <RequireAny>
+      {% for client_ip in apache_post_status_clients %}
+      Require ip {{ client_ip }}
+      {% endfor %}
+      Require ip 127.0.0.1/8
+    </RequireAny>
+    <RequireAll>
+      AuthType Basic
+      AuthName "Restricted"
+      AuthBasicProvider file
+      AuthUserFile "{{ apache_post_status_htpasswd }}"
+      Require user {{ apache_post_status_user }}
+    </RequireAll>
+  </RequireAll>
+</Location>
+{% endblock %}

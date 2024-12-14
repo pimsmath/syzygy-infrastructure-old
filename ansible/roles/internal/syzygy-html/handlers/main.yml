@@ -3,3 +3,10 @@
   shell: "rm -rf {{ syzygy_html_dir.dest }} && mkdir {{ syzygy_html_dir.dest }} && git archive {{ syzygy_landing_branch }} | tar -x -C {{ syzygy_html_dir.dest }}"
   args:
     chdir: '{{ syzygy_html_dir.src }}'
+
+- name: reload apache
+  become: true
+  service:
+    name: httpd
+    state: reloaded
+
